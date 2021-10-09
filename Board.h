@@ -19,6 +19,8 @@
 #include <iostream>
 #include <vector>
 
+enum State {FREE, STEPPED, OBSTACLE, INITIAL, END};
+
 class Board {
   public:
     Board(const int& rows, const int& cols);
@@ -31,11 +33,14 @@ class Board {
     void setCols(const int& cols);
     void setBoard(const int& rows, const int& cols);
 
-    void printCell(const int& x, const int& y);
     void changeState(const int& x, const int& y, const int& state);
-    std::ostream& printBoard(std::ostream& os = std::cout);
+    bool createObstacle(const int& x, const int& y);
+    void createRandomObstacle(int& KObstacles);
 
-    void createObsatcle();
+    int readCoordFile(std::ifstream& coord_file);
+
+    void printCell(const int& x, const int& y);
+    void printBoard(std::ostream& os = std::cout);
 
   private:
     int rows_;
