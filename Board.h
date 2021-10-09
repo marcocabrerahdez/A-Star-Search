@@ -37,7 +37,7 @@ class Board {
 
     void changeState(const int& x, const int& y, const int& state);
     bool createObstacle(const int& x, const int& y);
-    void createRandomObstacle(int& KObstacles);
+    void createRandomObstacle(int& obstacles);
 
     int readCoordFile(std::ifstream& coord_file);
 
