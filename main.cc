@@ -27,6 +27,7 @@ int main (){
     int opcion = 0;
     int X_puntoA, X_puntoB = 0;
     int Y_puntoA, Y_puntoB = 0;
+    int read_lines = 0;
     std::ifstream fichero;
     std::string file_name;
     std::cout << "----------------Practica nº1: Búsqueda--------------" << std::endl;
@@ -53,7 +54,8 @@ int main (){
         std::cout << "Introduzca el nombre del fichero:" << std::endl;
         std::cin >> file_name;
         fichero.open(file_name);
-        std::cout << "Número de obstaculos añadidos por fichero : " << tablero.readCoordFile(fichero) << std::endl;
+        read_lines = tablero.readCoordFile(fichero);
+        std::cout << "Número de obstaculos añadidos por fichero : " << read_lines << std::endl;
 
         break;
     case 1:

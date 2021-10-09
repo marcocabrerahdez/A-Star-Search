@@ -64,10 +64,11 @@ void Board::changeState(const int& x, const int& y, const int& state) {
 
 
 bool Board::createObstacle(const int& x, const int& y) {
-    if(assert(x >= 0 && y >= 0 && "Obstacle outside dimensions:(");
-    if (getCell(x, y) == 0) {
-        changeState(x, y, 2);
-        return true;
+    if(x >= 0 && y >= 0 && x <= getRows() && y <= getCols()) {
+      if (getCell(x, y) == 0) {
+          changeState(x, y, 2);
+          return true;
+      }
     }
     return false;
 }
@@ -147,7 +148,7 @@ int Board::readCoordFile(std::ifstream& coord_file) {
         placed_obstacles_count++;
       }
   }
-  std::cout << "Numero de lineas leidas (1 linea = 1 obstaculo) :" << lines_read << std::endl; 
+  std::cout << "Numero de lineas leidas (1 linea = 1 obstaculo): " << lines_read << std::endl; 
   return placed_obstacles_count;
 
 }
