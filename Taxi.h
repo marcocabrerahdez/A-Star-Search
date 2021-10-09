@@ -1,18 +1,18 @@
 /** 
  * Universidad de La Laguna
- * Asignatura: Computabilidad y Algoritmia
- * Practica Nº 4 Palabras de Fibonacci
+ * Asignatura: Inteligencia Artificial
+ * Practica nº1: Búsqueda.
  * @author Marco Cabrera Hernández
- * @author 
- * @author 
+ * @author Jose Antonio Trujillo Mendoza
+ * @author Mario Hernández García
  * @class Taxi
  * @brief Creates a Taxi object to walk the path
  *  
  * 
- * @date 09/10/2021
+ * @date 
  */
-#ifndef _TAXI_
-#define _TAXI_
+#ifndef _TAXI_H
+#define _TAXI_H
 
 enum direction {NORTH, EAST, SOUTH, WEST};
 
@@ -29,4 +29,4 @@ class Taxi {
     Position position_;
 };
 
-#endif // _TAXI_
+#endif // _TAXI_H
