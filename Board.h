@@ -27,8 +27,8 @@ class Board {
   public:
     Board(const int& rows, const int& cols);
 
-    int getRows();
-    int getCols();
+    int getRows(void);
+    int getCols(void);
     int getCell(const int& x, const int& y);
 
     void setRows(const int& rows);

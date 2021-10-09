@@ -11,17 +11,14 @@
  * 
  * @date 
  */
+#include "Board.h"
 
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include <string>
 
-#include "Board.h"
-
-
-int main (){
-    
+int main(void){
     int M = 0; //filas
     int N = 0; //columnas
     int opcion = 0;
