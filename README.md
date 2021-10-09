@@ -1,4 +1,4 @@
-# Práctica de Búsqueda - Inteligencia Artificial
+# Inteligencia Artificial - Práctica de Búsqueda
  Implementación de estrategias de búsqueda como propuesta de resolución para la determinación de trayectorias óptimas para taxis autónomos
 
 
