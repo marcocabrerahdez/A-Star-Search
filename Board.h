@@ -42,7 +42,7 @@ class Board {
     int readCoordFile(std::ifstream& coord_file);
 
     void printCell(const int& x, const int& y);
-    void printBoard(std::ostream& os = std::cout);
+    void printBoard();
 
   private:
     int rows_;

@@ -19,14 +19,14 @@ Board::Board(const int& rows, const int& cols) {
 
 
 // @return rows of the board
-int Board::getRows() {
+int Board::getRows(void) {
   return rows_;
 }
 
 
 
 // @return columns of the board
-int Board::getCols() {
+int Board::getCols(void) {
   return cols_;
 }
 
@@ -136,7 +136,7 @@ void Board::printCell(const int& x, const int& y) {
 
 
 // @brief prints the board on screen
-void Board::printBoard(std::ostream& os) {
+void Board::printBoard(void) {
   for (int i = 0; i < getRows(); i++) {
     std::cout << "\n";
     for (int j = 0; j < getCols(); j++) {
