@@ -1,4 +1,4 @@
-# P01-IA
+# Práctica de Búsqueda - Inteligencia Artificial
  Implementación de estrategias de búsqueda como propuesta de resolución para la determinación de trayectorias óptimas para taxis autónomos
 
 
