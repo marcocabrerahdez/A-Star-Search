@@ -46,7 +46,7 @@ class Board {
     int rows_;
     int cols_;
 
-    std::vector<std::vector<int>> board_;
+    std::vector<std::vector<int> > board_;
 };
 
 #endif // _BOARD_

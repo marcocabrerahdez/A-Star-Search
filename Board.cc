@@ -1,4 +1,5 @@
 #include "Board.h"
+#include <fstream>
 
 Board::Board(const int& rows, const int& cols) {
   assert(rows >= 0 && cols >= 0 && "Bad board dimensions:(");
@@ -62,10 +63,13 @@ void Board::changeState(const int& x, const int& y, const int& state) {
 
 
 
-bool createObstacle(const int& x, const int& y) {
-    if (getCell(row, col) == 0) {
-        changeState(x, y, OBSTACLE);
+bool Board::createObstacle(const int& x, const int& y) {
+    if(assert(x >= 0 && y >= 0 && "Obstacle outside dimensions:(");
+    if (getCell(x, y) == 0) {
+        changeState(x, y, 2);
         return true;
+    }
+    return false;
 }
 
 
@@ -77,14 +81,13 @@ void Board::createRandomObstacle(int& KObstacles) {
   srand(time(NULL));
   int area = getRows() * getCols();
 
-  KObstacles >= area - 2 ? KObstacles = area - 2 : KObstacles = KObstacles;
+  KObstacles >= area - 2 ? KObstacles = area - 2 : KObstacles;
 
-  while (obstacle_counter <= KObstacles) {
+  while (obstacle_counter < KObstacles) {
     row = rand() % getRows();
     col = rand() % getCols();
     if (createObstacle(row, col))
         obstacle_counter++;
-    }
   }
 }
 
@@ -122,23 +125,29 @@ void Board::printBoard(std::ostream& os) {
   for (int i = 0; i < getRows(); i++) {
       std::cout << "\n";
     for (int j = 0; j < getCols(); j++) {
-      printCell(i, j) << " ";
+      printCell(i, j);
     }
   }
+  std::cout << std::endl;
 }
 
 
 int Board::readCoordFile(std::ifstream& coord_file) {
-  coord_file.open();
   int placed_obstacles_count = 0;
+  int lines_read = 0;
+  std::string x_string = " ";
+  std::string y_string = " ";
   int x = 0;
   int y = 0;
-  while (!coord_file.eof()){
-      cin << x << y;
-      if ((x >= 0) && (x <= getRows()) && (y >= 0) && (y <= getCols()))
-        createObstacle(x, y, 2);
-
+  while (coord_file >> x_string >> y_string) {
+      lines_read++;
+      x = stoi(x_string);
+      y = stoi(y_string);
+      if (createObstacle(x, y)){
+        placed_obstacles_count++;
+      }
   }
-
+  std::cout << "Numero de lineas leidas (1 linea = 1 obstaculo) :" << lines_read << std::endl; 
+  return placed_obstacles_count;
 
 }
