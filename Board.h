@@ -17,6 +17,8 @@
 #include "Taxi.h"
 
 #include <iostream>
+#include <fstream>
+#include <cassert>
 #include <vector>
 
 enum State {FREE, STEPPED, OBSTACLE, INITIAL, END};
