@@ -25,7 +25,7 @@ Previo al desarrollo del recorrido se pide por pantalla.
 
 - :white_large_square: ¿Qué tiempo quiere dejar entre cada movimiento del coche? (En milisegundos).
 
-  .
+ ' .
   ├── bin              # Program 
   ├── build            # Makefile
   ├── doc              # Documentation of the code 
@@ -36,4 +36,4 @@ Previo al desarrollo del recorrido se pide por pantalla.
   ├── outputs          # Output files 
   ├── slides           # Pdf with the requirements information
   ├── src              # Source code
-  ├── test             # Test programs
+  ├── test             # Test programs'
