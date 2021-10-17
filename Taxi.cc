@@ -18,3 +18,54 @@ Taxi::Taxi(const int& x, const int& y) {
     position_.yCoord = y;
     direction_ = EAST;
 }
+
+
+
+int Taxi::getX_coord(){
+    return position_.xCoord;
+}
+
+
+
+int Taxi::getY_coord(){
+    return position_.yCoord;
+}
+
+
+
+void Taxi::printTaxi(void) {
+  Colors color;
+  switch (direction_) {
+    case NORTH:
+      std::cout << color.writeGreen("^");
+      break;
+    case EAST:
+      std::cout << color.writeGreen(">");;
+      break;
+      case SOUTH:
+      std::cout << color.writeGreen("v");;
+      break;
+    case WEST:
+      std::cout << color.writeGreen("<");;
+      break;  
+  }
+}
+
+
+
+void Taxi::printTaxi(std::ofstream& fout) {
+  switch (direction_) {
+    case NORTH:
+      fout << "^";
+      break;
+    case EAST:
+      fout << ">";
+      break;
+      case SOUTH:
+      fout << "v";
+      break;
+    case WEST:
+      fout << "<";
+      break;  
+  }
+}

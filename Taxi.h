@@ -14,6 +14,11 @@
 #ifndef _TAXI_H
 #define _TAXI_H
 
+#include <iostream>
+#include <fstream>
+
+#include "Colors.h"
+
 enum direction {NORTH, EAST, SOUTH, WEST};
 
 struct Position {
@@ -24,9 +29,16 @@ struct Position {
 class Taxi {
   public:
     Taxi(const int& x, const int& y);
+    int getX_coord();
+    int getY_coord();
+
+    void printTaxi();
+    void printTaxi(std::ofstream& fout);
   private:
     int direction_;
     Position position_;
 };
+
+
 
 #endif // _TAXI_H

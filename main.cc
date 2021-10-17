@@ -18,39 +18,74 @@
 #include <fstream>
 #include <string>
 
+#include <sys/ioctl.h>
+#include <unistd.h>
+
 int main(void){
     int M = 0; //filas
     int N = 0; //columnas
     int opcion = 0;
+    int op = 10;
     int X_puntoA, X_puntoB = 0;
     int Y_puntoA, Y_puntoB = 0;
     int read_lines = 0;
+    bool print_file = false;
+    bool out_of_bounds = true;
     
     std::ifstream fichero;
+    std::ofstream fichero_out;
     std::string file_name;
+
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
+    //std::cout << getenv("EDITOR");
 
     std::cout << "----------------Practica nº1: Búsqueda--------------" << std::endl;
     std::cout << "Introduzca el tamaño de la matriz (MxN):" << std::endl << "M: ";
     std::cin >> M;
-    std::cout << "N: ";
-    std::cin >> N; 
+    std::cout << "N (tamaño máximo: " << w.ws_col << " ): ";
+    std::cin >> N;
+    if (N > w.ws_col) {
+      while (op != 0 && op != 1 && op != 2) {
+        std::cout << "Se ha superado el tamaño máximo de N, afecta a su visualización, quiere sacarlo por fichero (0), introducir un N menor (1) o intentarlo otra vez con una ventana mayor (2)?" << std::endl;
+        std::cin >> op;
+        if (op == 2) {
+          ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+          if (N > w.ws_col) op = 5;
+        }
+      }
+      if (op == 1){
+        std::cout << "N (tamaño máximo: " << w.ws_col << " ): ";
+        std::cin >> N;
+      }
+      if (op == 0) {
+        print_file = true;
+      }
+    }
 
     Board tablero(M, N);
 
-    std::cout << "Indique el punto inicial (x): ";
-    std::cin >> X_puntoA;
+    while (out_of_bounds){
+      std::cout << "Indique el punto inicial (x): ";
+      std::cin >> X_puntoA;
 
-    std::cout << "Indique el punto inicial (y): ";
-    std::cin >> Y_puntoA;
+      std::cout << "Indique el punto inicial (y): ";
+      std::cin >> Y_puntoA;
 
+      std::cout << "Indique el punto final (x): ";
+      std::cin >> X_puntoB;
+
+      std::cout << "Indique el punto final (y) ";
+      std::cin >> Y_puntoB;
+      if (X_puntoA < 0 || X_puntoA > M || Y_puntoA < 0 || Y_puntoA > N || X_puntoB < 0 || X_puntoB > M || Y_puntoB < 0 || Y_puntoB > N){
+        out_of_bounds = true;
+        std::cout << "Ha introducido algun valor fuera del rango M: " << M << " N: " << N << std::endl;
+      }
+      else out_of_bounds = false;
+    }
+    Taxi taxi(X_puntoA, Y_puntoA);
     tablero.changeState(X_puntoA,Y_puntoA,3);
-
-    std::cout << "Indique el punto final (x): ";
-    std::cin >> X_puntoB;
-
-    std::cout << "Indique el punto final (y) ";
-    std::cin >> Y_puntoB;
-
     tablero.changeState(X_puntoB,Y_puntoB,4);
 
     std::cout << "¿Quiere introducir los obstáculos por pantalla o cargar un fichero de coordenadas (X,Y)? (0 por fichero, 1 por pantalla)" << std::endl;
@@ -95,5 +130,10 @@ int main(void){
         break;
     }
     // Print the board
-    tablero.printBoard();
+    if (print_file == true) {
+      fichero_out.open("output.txt");
+      tablero.printBoard(taxi, fichero_out);
+    } else {
+      tablero.printBoard(taxi);
+    }
 }

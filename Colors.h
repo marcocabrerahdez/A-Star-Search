@@ -3,7 +3,7 @@
 #include <iostream>
 
 /**
- * @brief      This class describes a colorizer.
+ * @brief This class describes a colorizer.
  */
 class Colors {
   public:

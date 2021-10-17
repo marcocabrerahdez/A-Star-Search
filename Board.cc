@@ -110,11 +110,11 @@ void Board::printCell(const int& x, const int& y) {
   Colors color;
   switch (getCell(x, y)) {
     case FREE:
-      std::cout << color.writeGrey(".");
+      std::cout << color.writeWhite("·");
       break;
 
     case STEPPED:
-      std::cout << color.writeWhite("X");
+      std::cout << color.writeCyan("X");
       break;
 
     case OBSTACLE:
@@ -136,15 +136,64 @@ void Board::printCell(const int& x, const int& y) {
 
 
 
+// @brief prints a cell on the board based on its state
+void Board::printCell(const int& x, const int& y, std::ofstream& fout) {
+  switch (getCell(x, y)) {
+    case FREE:
+      fout << "·";
+      break;
+
+    case STEPPED:
+      fout << "X";
+      break;
+
+    case OBSTACLE:
+      fout << "█";
+      break;
+
+    case INITIAL:
+      fout << "A";
+      break;
+
+    case END:
+      fout << "B";
+      break;
+    
+    default:
+        break;
+  }
+}
+
+
+
 // @brief prints the board on screen
-void Board::printBoard(void) {
+void Board::printBoard(Taxi taxi) {
   for (int i = 0; i < getRows(); i++) {
     std::cout << "\n";
     for (int j = 0; j < getCols(); j++) {
-      printCell(i, j);
+      if (i == taxi.getX_coord() && j == taxi.getY_coord())
+        taxi.printTaxi();
+      else 
+        printCell(i, j);
     }
   }
   std::cout << std::endl;
+}
+
+
+
+// @brief prints the board on screen
+void Board::printBoard(Taxi taxi, std::ofstream& fout) {
+  for (int i = 0; i < getRows(); i++) {
+    fout << "\n";
+    for (int j = 0; j < getCols(); j++) {
+      if (i == taxi.getX_coord() && j == taxi.getY_coord())
+        taxi.printTaxi(fout);
+      else 
+        printCell(i, j, fout);
+    }
+  }
+  fout << std::endl;
 }
 
 

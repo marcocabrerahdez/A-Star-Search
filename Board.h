@@ -43,8 +43,9 @@ class Board {
     int readCoordFile(std::ifstream& coord_file);
 
     void printCell(const int& x, const int& y);
-    void printBoard();
-
+    void printCell(const int& x, const int& y, std::ofstream& fout);
+    void printBoard(Taxi taxi);
+    void printBoard(Taxi taxi, std::ofstream& fout);
   private:
     int rows_;
     int cols_;
