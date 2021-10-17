@@ -24,3 +24,5 @@ Previo al desarrollo del recorrido se pide por pantalla.
 - ☑️ Posición inicial y final.
 
 - ☑️ ¿Qué tiempo quiere dejar entre cada movimiento del coche? (En milisegundos).
+
+🔳
