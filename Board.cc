@@ -107,25 +107,26 @@ void Board::createRandomObstacle(int& obstacles) {
 
 // @brief prints a cell on the board based on its state
 void Board::printCell(const int& x, const int& y) {
+  Colors color;
   switch (getCell(x, y)) {
     case FREE:
-      std::cout << ".";
+      std::cout << color.writeGrey(".");
       break;
 
     case STEPPED:
-      std::cout << "X";
+      std::cout << color.writeWhite("X");
       break;
 
     case OBSTACLE:
-      std::cout << "█";
+      std::cout << color.writeYellow("█");
       break;
 
     case INITIAL:
-      std::cout << "A";
+      std::cout << color.writeRed("A");
       break;
 
     case END:
-      std::cout << "B";
+      std::cout << color.writeBlue("B");
       break;
     
     default:

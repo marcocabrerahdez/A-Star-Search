@@ -14,6 +14,7 @@
 #ifndef _BOARD_
 #define _BOARD_
 
+#include "Colors.h"
 #include "Taxi.h"
 
 #include <iostream>
