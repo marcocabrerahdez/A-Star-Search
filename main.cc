@@ -46,6 +46,10 @@ int main(void){
     std::cin >> M;
     std::cout << "N (tamaño máximo: " << w.ws_col << " ): ";
     std::cin >> N;
+    if(M <= 0 || N <= 0){
+      std::cout << "No se puede crear un tablero con M o N <= 0" << std::endl;
+      return 1;
+    }
     if (N > w.ws_col) {
       while (op != 0 && op != 1 && op != 2) {
         std::cout << "Se ha superado el tamaño máximo de N, afecta a su visualización, quiere sacarlo por fichero (0), introducir un N menor (1) o intentarlo otra vez con una ventana mayor (2)?" << std::endl;
