@@ -22,6 +22,7 @@
 #include <vector>
 #include <fstream>
 #include <cmath>
+#include <ctime>
 
 enum direction {NORTH, EAST, SOUTH, WEST};
 
@@ -33,7 +34,8 @@ class Taxi {
     int getY_coord() const;
     float d_euclidea(const Board& board, const Position f);
     float d_manhattan(const Board& board, const Position f);
-    std::vector<Position> get_neighbors() const;
+    std::vector<Position> get_neighbor_4(const Board& tablero) const;
+    std::vector<Position> get_neighbor_8(const Board& tablero) const;
     // Prints the board
     void printBoard(Board taxi);
     // Prints the board in a file
@@ -41,13 +43,19 @@ class Taxi {
     // Prints the taxi in the board
     void printTaxi();
     void printTaxi(std::ofstream& fout);
+    void a_star(Board board, int option);
   private:
     // Specifies current direction of the taxi
     int direction_;
+
+    float costeI_;
+    float costeF_;
     // Specifies the current position of the taxi
     Position position_;
     // Store accesible board cordinates 4 or 8
     std::vector<Position> neighbors_;
+
+    clock_t time_;
 };
 
 #endif // _TAXI_H

@@ -16,15 +16,13 @@
 
 #include "Colors.h"
 #include "Position.h"
-
+#include "Cell.h"
 
 #include <iostream>
 #include <fstream>
 #include <cmath>
 #include <cassert>
 #include <vector>
-
-enum State {FREE, STEPPED, OBSTACLE, INITIAL, END};
 
 class Board {
   public:
@@ -33,7 +31,7 @@ class Board {
     // Getters
     int getRows(void) const;
     int getCols(void) const;
-    int getCell(const int& x, const int& y);
+    Cell getCell(const int& x, const int& y);
     // Reads the coordinates given from a file
     int readCoordFile(std::ifstream& coord_file);
     Position getInitial() const;
@@ -64,7 +62,7 @@ class Board {
     // Stores the end point
     Position goal_;
     // Stores the board
-    std::vector<std::vector<int> > board_;
+    std::vector<std::vector<Cell> > board_;
 };
 
 #endif // _BOARD_H_

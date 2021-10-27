@@ -53,6 +53,7 @@ void Taxi::printTaxi(void) {
 
 
 
+
 void Taxi::printTaxi(std::ofstream& fout) {
   switch (direction_) {
     case NORTH:
@@ -73,16 +74,15 @@ void Taxi::printTaxi(std::ofstream& fout) {
 
 
 
-
 // @brief prints the board on screen
-void Taxi::printBoard(Board taxi) {
-  for (int i = 0; i < taxi.getRows(); i++) {
+void Taxi::printBoard(Board tablero) {
+  for (int i = 0; i < tablero.getRows(); i++) {
     std::cout << "\n";
-    for (int j = 0; j < taxi.getCols(); j++) {
+    for (int j = 0; j < tablero.getCols(); j++) {
       if (i == getX_coord() && j == getY_coord())
         printTaxi();
       else 
-        taxi.printCell(i, j);
+        tablero.printCell(i, j);
     }
   }
   std::cout << std::endl;
@@ -91,14 +91,14 @@ void Taxi::printBoard(Board taxi) {
 
 
 // @brief prints the board on screen
-void Taxi::printBoard(Board taxi, std::ofstream& fout) {
-  for (int i = 0; i < taxi.getRows(); i++) {
+void Taxi::printBoard(Board tablero, std::ofstream& fout) {
+  for (int i = 0; i < tablero.getRows(); i++) {
     fout << "\n";
-    for (int j = 0; j < taxi.getCols(); j++) {
+    for (int j = 0; j < tablero.getCols(); j++) {
       if (i == getX_coord() && j == getY_coord())
         printTaxi(fout);
       else 
-        taxi.printCell(i, j, fout);
+        tablero.printCell(i, j, fout);
     }
   }
   fout << std::endl;
@@ -114,4 +114,16 @@ float Taxi::d_euclidea(const Board& i, const Position f) {
 float Taxi::d_manhattan(const Board& i, const Position f) {
   Position goal_ = i.getGoal();
   return static_cast<float>(fabs(static_cast<double>(goal_.xCoord - f.xCoord)) + fabs(static_cast<double>(goal_.yCoord - f.yCoord)));
+}
+
+
+std::vector<Position> Taxi::get_neighbor_4(const Board& tablero) const {
+  std::vector<Position> pos;  //
+}
+
+
+
+
+void Taxi::a_star(Board board, int option) {
+  time_ = clock();
 }

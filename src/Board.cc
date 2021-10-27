@@ -11,7 +11,7 @@ Board::Board(const int& rows, const int& cols) {
   // Initialize board dimensions
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
-      board_[i][j] = FREE;
+      board_[i][j].set_estado(FREE);
     }
   }
 }
@@ -33,17 +33,23 @@ int Board::getCols(void) const {
 
 
 // @return a specific cell of the board
-int Board::getCell(const int& x, const int& y) {
+Cell Board::getCell(const int& x, const int& y) {
     return board_[x][y];
 }
+
+
 
 Position Board::getInitial() const {
   return initial_;
 }
 
+
+
 Position Board::getGoal() const {
   return goal_;
 }
+
+
 
 // @brief sets rows
 void Board::setRows(const int& rows) {
@@ -86,15 +92,20 @@ void Board::setBoard(const int& rows, const int& cols) {
 
 // @brief changes state of the cell
 void Board::changeState(const int& x, const int& y, const int& state) {
-    board_[x][y] = state;
+  
+  board_[x][y].set_estado(state);
+
+  
 }
 
 
 
 // @brief creates an obstacle in a specicif position of the board
 bool Board::createObstacle(const int& x, const int& y) {
+  Cell dummy;
   if(x >= 0 && y >= 0 && x <= getRows() && y <= getCols()) {
-    if (getCell(x, y) == 0) {
+    dummy = getCell(x, y);
+    if (dummy.get_estado() == 0) {
       changeState(x, y, 2);
       return true;
     }
@@ -129,7 +140,8 @@ void Board::createRandomObstacle(int& obstacles) {
 // @brief prints a cell on the board based on its state
 void Board::printCell(const int& x, const int& y) {
   Colors color;
-  switch (getCell(x, y)) {
+  Cell dummy = getCell(x, y);
+  switch (dummy.get_estado()) {
     case FREE:
       std::cout << color.writeWhite("·");
       break;
@@ -159,7 +171,8 @@ void Board::printCell(const int& x, const int& y) {
 
 // @brief prints a cell on the board based on its state
 void Board::printCell(const int& x, const int& y, std::ofstream& fout) {
-  switch (getCell(x, y)) {
+  Cell dummy = getCell(x, y);
+  switch (dummy.get_estado()) {
     case FREE:
       fout << "·";
       break;
