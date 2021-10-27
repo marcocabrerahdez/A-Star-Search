@@ -31,7 +31,7 @@ class Board {
     // Getters
     int getRows(void) const;
     int getCols(void) const;
-    Cell getCell(const int& x, const int& y);
+    Cell& getCell(const int& x, const int& y);
     // Reads the coordinates given from a file
     int readCoordFile(std::ifstream& coord_file);
     Position getInitial() const;

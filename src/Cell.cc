@@ -13,16 +13,13 @@
  */
 #include "../include/Cell.h"
 
-Cell::Cell() {
-  estado_ = FREE;
-  costeG_ = 1;
-}
-
-
-
-Cell::Cell(int estado, float costeG) {
-  estado_ = estado;
-  costeG_ = costeG;
+Cell::Cell(int row, int col, int estado) {
+  row_ = row;
+  col_ = col;
+  f_ = 0;
+  g_ = 0;
+  h_ = 0;
+  parent_ = 0;
 }
 
 

@@ -2,12 +2,10 @@
 
 Board::Board(const int& rows, const int& cols) {
   assert(rows >= 0 && cols >= 0 && "Bad board dimensions:(");
-    
   // Assign initial board positions
   setRows(rows);
   setCols(cols);
   setBoard(rows, cols);
-
   // Initialize board dimensions
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
@@ -33,7 +31,7 @@ int Board::getCols(void) const {
 
 
 // @return a specific cell of the board
-Cell Board::getCell(const int& x, const int& y) {
+Cell& Board::getCell(const int& x, const int& y) {
     return board_[x][y];
 }
 
