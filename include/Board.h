@@ -1,16 +1,16 @@
-/** 
- * Universidad de La Laguna
- * Asignatura: Inteligencia Artificial
- * Practica nº1: Búsqueda.
- * @author Marco Cabrera Hernández
+/**
+ * University of La Laguna
+ * Subject: Artificial Intelligence
+ * Practice # 1: Search.
+ * @author Marco Antonio Cabrera Hernández
  * @author Jose Antonio Trujillo Mendoza
- * @author 
- * @class Taxi
- * @brief Creates a Board object to show the path
- *  
- * 
- * @date 
- */
+ * @author Mario Hernández García
+ * @class Board
+ * @brief Creates a Board object to create a 2 dimension board
+ *
+ *
+ * @date
+*/
 #ifndef _BOARD_H_
 #define _BOARD_H_
 
@@ -25,29 +25,37 @@ enum State {FREE, STEPPED, OBSTACLE, INITIAL, END};
 class Board {
   public:
     Board(const int& rows, const int& cols);
-
+    
+    // Getters
     int getRows(void) const;
     int getCols(void) const;
     int getCell(const int& x, const int& y);
-
+    // Reads the coordinates given from a file
+    int readCoordFile(std::ifstream& coord_file);
+    // Setters
     void setRows(const int& rows);
     void setCols(const int& cols);
     void setBoard(const int& rows, const int& cols);
-
+    // Changes the state of a specific cell of the board
     void changeState(const int& x, const int& y, const int& state);
-    bool createObstacle(const int& x, const int& y);
+    // Creates a random obstacles on the board
     void createRandomObstacle(int& obstacles);
-
-    int readCoordFile(std::ifstream& coord_file);
-
+    // Print a specific cell of the board
     void printCell(const int& x, const int& y);
+    // Print a specific cell of the board in a file
     void printCell(const int& x, const int& y, std::ofstream& fout);
+    // Prints the board
     void printBoard(Taxi taxi);
+    // Prints the board in a file
     void printBoard(Taxi taxi, std::ofstream& fout);
+    // Checks if the obstacle option is on
+    bool createObstacle(const int& x, const int& y);
   private:
+    // Rows of the board
     int rows_;
+    // Columns of the board
     int cols_;
-
+    // Stores the board
     std::vector<std::vector<int>> board_;
 };
 

@@ -1,16 +1,16 @@
-/** 
- * Universidad de La Laguna
- * Asignatura: Inteligencia Artificial
- * Practica nº1: Búsqueda.
+/**
+ * University of La Laguna
+ * Subject: Artificial Intelligence
+ * Practice # 1: Search.
  * @author Marco Antonio Cabrera Hernández
  * @author Jose Antonio Trujillo Mendoza
  * @author Mario Hernández García
- * @class Taxi
- * @brief Creates a Taxi object to walk the path
- *  
- * 
- * @date 
- */
+ * @class Color
+ * @brief Returns a color for each element of the game
+ *
+ *
+ * @date
+*/
 #ifndef COLORS_H_
 #define COLORS_H_
 
@@ -19,7 +19,6 @@
 
 class Colors {
   public:
-    // Builder & Destroyer
     Colors(void) = default;
 
     // Text color functions

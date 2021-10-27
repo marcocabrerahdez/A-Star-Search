@@ -1,33 +1,33 @@
-/** 
- * Universidad de La Laguna
- * Asignatura: Inteligencia Artificial
- * Practica nº1: Búsqueda.
+/**
+ * University of La Laguna
+ * Subject: Artificial Intelligence
+ * Practice # 1: Search.
  * @author Marco Antonio Cabrera Hernández
  * @author Jose Antonio Trujillo Mendoza
  * @author Mario Hernández García
  * @class Taxi
  * @brief Creates a Taxi object to walk the path
- *  
- * 
- * @date 
- */
-#ifndef HEURISTICAS_H
-#define HEURISTICAS_H
+ *
+ *
+ * @date
+*/
+#ifndef HEURISTIC_H
+#define HEURISTIC_H
 
 #include "Board.h"
 
 #include <cmath>
 
-class Heuristicas {
+class Heuristic {
   public:
-    Heuristicas(void) = default;
+    Heuristic(void) = default;
 
     virtual int operator()(const Board&, const Board&) = 0;
 };
 
 
 
-class Euclidea : public Heuristicas {
+class Euclidea : public Heuristic {
   public:
     Euclidea(void) = default;
 
@@ -36,7 +36,7 @@ class Euclidea : public Heuristicas {
 
 
 
-class Manhattan : public Heuristicas {
+class Manhattan : public Heuristic {
   public:
     Manhattan(void) = default;
 
