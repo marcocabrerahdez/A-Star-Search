@@ -28,8 +28,8 @@ class Board {
   public:
     Board(const int& rows, const int& cols);
 
-    int getRows(void);
-    int getCols(void);
+    int getRows(void) const;
+    int getCols(void) const;
     int getCell(const int& x, const int& y);
 
     void setRows(const int& rows);
@@ -50,7 +50,7 @@ class Board {
     int rows_;
     int cols_;
 
-    std::vector<std::vector<int> > board_;
+    std::vector<std::vector<int>> board_;
 };
 
 #endif // _BOARD_

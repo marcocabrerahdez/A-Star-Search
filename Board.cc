@@ -19,14 +19,14 @@ Board::Board(const int& rows, const int& cols) {
 
 
 // @return rows of the board
-int Board::getRows(void) {
+int Board::getRows(void) const {
   return rows_;
 }
 
 
 
 // @return columns of the board
-int Board::getCols(void) {
+int Board::getCols(void) const {
   return cols_;
 }
 
