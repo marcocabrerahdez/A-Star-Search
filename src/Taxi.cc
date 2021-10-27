@@ -21,13 +21,13 @@ Taxi::Taxi(const int& x, const int& y) {
 
 
 
-int Taxi::getX_coord(){
+int Taxi::getX_coord() const {
     return position_.xCoord;
 }
 
 
 
-int Taxi::getY_coord(){
+int Taxi::getY_coord() const {
     return position_.yCoord;
 }
 
@@ -68,4 +68,50 @@ void Taxi::printTaxi(std::ofstream& fout) {
       fout << "<";
       break;  
   }
+}
+
+
+
+
+
+// @brief prints the board on screen
+void Taxi::printBoard(Board taxi) {
+  for (int i = 0; i < taxi.getRows(); i++) {
+    std::cout << "\n";
+    for (int j = 0; j < taxi.getCols(); j++) {
+      if (i == getX_coord() && j == getY_coord())
+        printTaxi();
+      else 
+        taxi.printCell(i, j);
+    }
+  }
+  std::cout << std::endl;
+}
+
+
+
+// @brief prints the board on screen
+void Taxi::printBoard(Board taxi, std::ofstream& fout) {
+  for (int i = 0; i < taxi.getRows(); i++) {
+    fout << "\n";
+    for (int j = 0; j < taxi.getCols(); j++) {
+      if (i == getX_coord() && j == getY_coord())
+        printTaxi(fout);
+      else 
+        taxi.printCell(i, j, fout);
+    }
+  }
+  fout << std::endl;
+}
+float Taxi::d_euclidea(const Board& i, const Position f) {
+  Position goal_ = i.getGoal();
+  return static_cast<float>(sqrt(pow((fabs(goal_.xCoord - f.xCoord)), 2) + (pow((fabs(goal_.yCoord - f.yCoord)), 2))));
+}
+
+
+
+
+float Taxi::d_manhattan(const Board& i, const Position f) {
+  Position goal_ = i.getGoal();
+  return static_cast<float>(fabs(static_cast<double>(goal_.xCoord - f.xCoord)) + fabs(static_cast<double>(goal_.yCoord - f.yCoord)));
 }

@@ -15,23 +15,29 @@
 #define _TAXI_H
 
 #include "Colors.h"
+#include "Board.h"
+#include "Position.h"
 
 #include <iostream>
+#include <vector>
 #include <fstream>
+#include <cmath>
 
 enum direction {NORTH, EAST, SOUTH, WEST};
-
-struct Position {
-  int xCoord;
-  int yCoord;
-};
 
 class Taxi {
   public:
     Taxi(const int& x, const int& y);
     
-    int getX_coord();
-    int getY_coord();
+    int getX_coord() const;
+    int getY_coord() const;
+    float d_euclidea(const Board& board, const Position f);
+    float d_manhattan(const Board& board, const Position f);
+    std::vector<Position> get_neighbors() const;
+    // Prints the board
+    void printBoard(Board taxi);
+    // Prints the board in a file
+    void printBoard(Board taxi, std::ofstream& fout);
     // Prints the taxi in the board
     void printTaxi();
     void printTaxi(std::ofstream& fout);
@@ -40,6 +46,8 @@ class Taxi {
     int direction_;
     // Specifies the current position of the taxi
     Position position_;
+    // Store accesible board cordinates 4 or 8
+    std::vector<Position> neighbors_;
 };
 
 #endif // _TAXI_H

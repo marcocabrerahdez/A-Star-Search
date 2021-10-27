@@ -37,7 +37,13 @@ int Board::getCell(const int& x, const int& y) {
     return board_[x][y];
 }
 
+Position Board::getInitial() const {
+  return initial_;
+}
 
+Position Board::getGoal() const {
+  return goal_;
+}
 
 // @brief sets rows
 void Board::setRows(const int& rows) {
@@ -53,6 +59,20 @@ void Board::setCols(const int& cols) {
 
 
 
+void Board::setInitial(const int& rows, const int& cols) {
+  initial_.xCoord = rows;
+  initial_.yCoord = cols;
+}
+
+
+
+void Board::setGoal(const int& rows, const int& cols) {
+  goal_.xCoord = rows;
+  goal_.yCoord = cols;
+}
+
+
+
 // @brief sets board dimensions
 void Board::setBoard(const int& rows, const int& cols) {
   board_.resize(rows);
@@ -60,6 +80,7 @@ void Board::setBoard(const int& rows, const int& cols) {
   for (int i = 0; i < rows; i++) 
     board_[i].resize(cols);
 }
+
 
 
 
@@ -166,38 +187,6 @@ void Board::printCell(const int& x, const int& y, std::ofstream& fout) {
 
 
 
-// @brief prints the board on screen
-void Board::printBoard(Taxi taxi) {
-  for (int i = 0; i < getRows(); i++) {
-    std::cout << "\n";
-    for (int j = 0; j < getCols(); j++) {
-      if (i == taxi.getX_coord() && j == taxi.getY_coord())
-        taxi.printTaxi();
-      else 
-        printCell(i, j);
-    }
-  }
-  std::cout << std::endl;
-}
-
-
-
-// @brief prints the board on screen
-void Board::printBoard(Taxi taxi, std::ofstream& fout) {
-  for (int i = 0; i < getRows(); i++) {
-    fout << "\n";
-    for (int j = 0; j < getCols(); j++) {
-      if (i == taxi.getX_coord() && j == taxi.getY_coord())
-        taxi.printTaxi(fout);
-      else 
-        printCell(i, j, fout);
-    }
-  }
-  fout << std::endl;
-}
-
-
-
 // @brief reads a coordinate from a file and assigns it to a cell on the board
 // @return count of obstacles placed in the board
 int Board::readCoordFile(std::ifstream& coord_file) {
@@ -220,3 +209,5 @@ int Board::readCoordFile(std::ifstream& coord_file) {
   std::cout << "Numero de lineas leidas (1 linea = 1 obstaculo): " << lines_read << std::endl; 
   return placed_obstacles_count;
 }
+
+

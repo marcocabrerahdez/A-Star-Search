@@ -15,8 +15,12 @@
 #define _BOARD_H_
 
 #include "Colors.h"
-#include "Taxi.h"
+#include "Position.h"
 
+
+#include <iostream>
+#include <fstream>
+#include <cmath>
 #include <cassert>
 #include <vector>
 
@@ -32,9 +36,13 @@ class Board {
     int getCell(const int& x, const int& y);
     // Reads the coordinates given from a file
     int readCoordFile(std::ifstream& coord_file);
+    Position getInitial() const;
+    Position getGoal() const;
     // Setters
     void setRows(const int& rows);
     void setCols(const int& cols);
+    void setInitial(const int& rows, const int& cols);
+    void setGoal(const int& rows, const int& cols);
     void setBoard(const int& rows, const int& cols);
     // Changes the state of a specific cell of the board
     void changeState(const int& x, const int& y, const int& state);
@@ -44,10 +52,6 @@ class Board {
     void printCell(const int& x, const int& y);
     // Print a specific cell of the board in a file
     void printCell(const int& x, const int& y, std::ofstream& fout);
-    // Prints the board
-    void printBoard(Taxi taxi);
-    // Prints the board in a file
-    void printBoard(Taxi taxi, std::ofstream& fout);
     // Checks if the obstacle option is on
     bool createObstacle(const int& x, const int& y);
   private:
@@ -55,8 +59,12 @@ class Board {
     int rows_;
     // Columns of the board
     int cols_;
+    // Stores de initial point
+    Position initial_;
+    // Stores the end point
+    Position goal_;
     // Stores the board
-    std::vector<std::vector<int>> board_;
+    std::vector<std::vector<int> > board_;
 };
 
 #endif // _BOARD_H_

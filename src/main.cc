@@ -11,7 +11,7 @@
  * 
  * @date 
  */
-#include "../include/Board.h"
+#include "../include/Taxi.h"
 
 #include <stdio.h>
 #include <iostream>
@@ -89,8 +89,15 @@ int main(void){
       else out_of_bounds = false;
     }
     Taxi taxi(X_puntoA, Y_puntoA);
+    tablero.setInitial(X_puntoA, Y_puntoA);
+    tablero.setGoal(X_puntoB, Y_puntoB);
     tablero.changeState(X_puntoA,Y_puntoA,3);
     tablero.changeState(X_puntoB,Y_puntoB,4);
+
+    Position test;
+    test.xCoord = 4;
+    test.yCoord = 4;
+    std::cout << taxi.d_euclidea(tablero, test) << std::endl;
 
     std::cout << "¿Quiere introducir los obstáculos por pantalla o cargar un fichero de coordenadas (X,Y)? (0 por fichero, 1 por pantalla)" << std::endl;
     std::cin >> opcion;
@@ -136,8 +143,8 @@ int main(void){
     // Print the board
     if (print_file == true) {
       fichero_out.open("output.txt");
-      tablero.printBoard(taxi, fichero_out);
+      taxi.printBoard(tablero, fichero_out);
     } else {
-      tablero.printBoard(taxi);
+      taxi.printBoard(tablero);
     }
 }
