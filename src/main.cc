@@ -11,7 +11,7 @@
  * 
  * @date 
  */
-#include "Board.h"
+#include "../include/Board.h"
 
 #include <stdio.h>
 #include <iostream>
