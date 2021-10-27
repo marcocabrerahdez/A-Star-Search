@@ -1,4 +1,4 @@
-#include "Board.h"
+#include "../include/Board.h"
 
 Board::Board(const int& rows, const int& cols) {
   assert(rows >= 0 && cols >= 0 && "Bad board dimensions:(");

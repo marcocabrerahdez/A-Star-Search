@@ -11,14 +11,12 @@
  * 
  * @date 
  */
-#ifndef _BOARD_
-#define _BOARD_
+#ifndef _BOARD_H_
+#define _BOARD_H_
 
 #include "Colors.h"
 #include "Taxi.h"
 
-#include <iostream>
-#include <fstream>
 #include <cassert>
 #include <vector>
 
@@ -53,4 +51,4 @@ class Board {
     std::vector<std::vector<int>> board_;
 };
 
-#endif // _BOARD_
+#endif // _BOARD_H_

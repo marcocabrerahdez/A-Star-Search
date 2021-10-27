@@ -1,4 +1,4 @@
-#include "Colors.h"
+#include "../include/Colors.h"
 
 std::string Colors::writeGrey(const std::string& str) {
 	return ("\033[30m" + str + "\033[00m");
