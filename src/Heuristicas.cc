@@ -13,6 +13,9 @@
  */
 #include "../include/Heuristicas.h"
 
+  //REVISAR YA QUE HAY QUE TENER EN CUENTA LA POSICION DEL TAXI, HABRA QUE LLAMAR GETY_COORD Y GETX_COORD
+
+
 int Euclidea::operator()(const Board& i, const Board& f){
   return static_cast<int>(sqrt(pow((i.getRows() - f.getRows()),2) + pow((i.getCols() - f.getCols()), 2)));
 }
