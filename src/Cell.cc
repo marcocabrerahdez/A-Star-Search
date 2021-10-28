@@ -1,6 +1,6 @@
 #include "../include/Cell.h"
 
-Cell::Cell():valor_(0), g_(INT_MAX), f_(INT_MAX), x_(0), y_(0) {
+Cell::Cell():valor_(FREE), g_(INT_MAX), f_(INT_MAX), x_(0), y_(0) {
     padre_ = std::make_pair(0, 0);
 }
 

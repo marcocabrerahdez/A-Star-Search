@@ -18,17 +18,17 @@
 
 #include <cmath>
 
-class Heurisitc {
+class Heuristic {
   public:
-    Heurisitc() = default;
-    virtual ~Heurisitc();
+    Heuristic() = default;
+    virtual ~Heuristic();
 
     virtual int operator()(const Cell&, const Cell&) = 0;
 };
 
 //-----------------------DISTANCIA EUCLIDEA-------------------------
 
-class d_euclidea : public Heurisitc {
+class d_euclidea : public Heuristic {
 public:
     d_euclidea() = default;
     int operator()(const Cell&, const Cell&);
@@ -36,7 +36,7 @@ public:
 
 //-----------------------DISTANCIA RECTILINEA-----------------------
 
-class d_manhattan : public Heurisitc {
+class d_manhattan : public Heuristic {
 public:
     d_manhattan() = default;
     int operator()(const Cell&, const Cell&);

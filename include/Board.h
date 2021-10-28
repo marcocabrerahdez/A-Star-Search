@@ -44,6 +44,8 @@ class Board {
     void setInitial(const int& rows, const int& cols);
     void setGoal(const int& rows, const int& cols);
     void setBoard(const int& rows, const int& cols);
+    void setHeuristic(int option);
+
     // Changes the state of a specific cell of the board
     void changeState(const int& x, const int& y, const int& state);
     // Creates a random obstacles on the board
@@ -60,15 +62,15 @@ class Board {
     bool createObstacle(const int& x, const int& y);
 
     bool is_in_set(const Cell& c, const std::vector<Cell>& s);
-    std::vector<Cell> a_star(int xInicio, int yInicio, int xFinal, int yFinal);
-    void gestionar_vecino(std::vector<Cell>& open, Cell celda_vecina);
-    // Falta por hacer
-    // void reconstruir_camino(Cell celda);
-    // void caminoOptimo(int xInicio, int yInicio, int xFinal, int yFinal);
-    // void setVecino(int x, int y);
-    // void setVecino();
+    std::vector<Cell>& a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result);
+    void gestionar_vecino(std::vector<Cell> open, Cell celda_vecina);
+    void reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell I);
+    bool caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal);
+    void setVecinos();
+    void setVecino(int i, int j);
     
-    static int contador;
+    int contador = 0;
+
   private:
     // Rows of the board
     int rows_;
@@ -77,7 +79,7 @@ class Board {
     // Stores the board
     std::vector<std::vector<Cell> > board_;
 
-    Heurisitc* heuristic_;
+    Heuristic* heuristic_;
 };
 
 #endif // _BOARD_H_

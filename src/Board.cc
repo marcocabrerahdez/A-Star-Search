@@ -12,6 +12,7 @@ Board::Board(const int& rows, const int& cols) {
       board_[i][j].setValor(FREE);
     }
   }
+  //setVecinos();
 }
 
 
@@ -54,11 +55,17 @@ void Board::setCols(const int& cols) {
 // @brief sets board dimensions
 void Board::setBoard(const int& rows, const int& cols) {
   board_.resize(rows);
-    
-  for (int i = 0; i < rows; i++) 
+  for (int i = 0; i < rows; i++) {
     board_[i].resize(cols);
-}
+  }
 
+  for (int i = 0; i < board_.size(); i++) {
+    for (int j = 0; j < board_[i].size(); j++) {
+      Cell aux(i, j);
+      board_[i][j] = aux;
+    }
+  }
+}
 
 
 
@@ -224,6 +231,13 @@ void Board::printBoard(Taxi taxi, std::ofstream& fout) {
   fout << std::endl;
 }
 
+void Board::setInitial(const int& rows, const int& cols){}
+
+
+void Board::setGoal(const int& rows, const int& cols) {
+  
+}
+
 
 
 bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
@@ -236,19 +250,18 @@ bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
 
 
 // No funciona bien aun, falta buscar camino minimo
-std::vector<Cell> Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal) {
-  std::vector<Cell> result;                                             
+std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result) {                                            
   std::vector<Cell> setAbierto;
   std::vector<Cell> setCerrado;
   Cell& Inicial = board_[xInicio][yInicio];
   Cell& Final = board_[xFinal][yFinal];
 
-  Inicial.setg_(0);                                                  
+  Inicial.setg_(0);         
+  //Añadir metodo de eleccion de heuristica                                         
   Inicial.setf_((*heuristic_)(Inicial, Final));
 
   setAbierto.push_back(Inicial);                                     
   contador++;
-
   while(!setAbierto.empty()){
     unsigned int winner = 0;
     for(unsigned int i = 0; i < setAbierto.size(); i++) {     
@@ -258,17 +271,18 @@ std::vector<Cell> Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal
     }
     Cell actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()]; 
     // Si es la misma celda -> Hemos llegado al final con camino óptimo
-    if((actual.getX() == xFinal) && (yFinal == actual.getY())) {  
-      // -> Funcion de reconstruir camno (Propagar) 
+    if((actual.getX() == xFinal) && (yFinal == actual.getY())) { 
+      reconstruir_camino(result, actual, Inicial);
       return result;
     }
-    setAbierto.erase(setAbierto.begin() + winner);                
+    setAbierto.erase(setAbierto.begin() + winner);
+    setVecino(actual.getX(),actual.getY());                
     setCerrado.push_back(actual);
-    // Miramos los vecinos de la Celda actual
-    for(int i = 0; i < actual.sizeVecinos(); i++) {                 
+
+    for(unsigned int i = 0; i < actual.sizeVecinos(); i++) {                 
       int x = actual.getVecino(i).first;
       int y = actual.getVecino(i).second;
-      Cell vecino = board_[x][y];              
+      Cell vecino = board_[x][y];            
       if(is_in_set(vecino, setCerrado))
           continue;
 
@@ -288,4 +302,92 @@ std::vector<Cell> Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal
     }
   }
   return result;
+}
+
+
+
+void Board::reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell i) {
+  Cell& aux = actual;
+  v.push_back(aux);
+  while ((aux.getX() != i.getX()) || (aux.getY() != aux.getY())) {
+    aux = board_[static_cast<int>(aux.getPadre().first)][static_cast<int>(aux.getPadre().second)];
+    v.push_back(aux);
+  }
+}
+
+bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal) {
+  if(board_[xInicio][yInicio].getValor() == 3){
+      board_[xInicio][yInicio].setValor(3);
+      setVecino(static_cast<unsigned int>(xInicio), static_cast<unsigned int>(yInicio));
+  }
+  if(board_[xFinal][yFinal].getValor() == 4){
+      board_[xFinal][yFinal].setValor(4);
+      if(static_cast<int>(xFinal) - 1 >= 0){
+          setVecino(xFinal - 1, yFinal);
+      }
+      if(xFinal + 1 < board_.size()){
+          setVecino(xFinal + 1, yFinal);
+      }
+      if(static_cast<int>(yFinal) - 1 >= 0){
+          setVecino(xFinal, yFinal - 1);
+      }
+      if(yFinal + 1 < board_[0].size()){
+          setVecino(xFinal, yFinal + 1);
+      }
+  }
+  long time_init = clock();
+  std::vector<Cell> result;
+  std::vector<Cell>& result2 = a_star(xInicio, yInicio, xFinal, yFinal, result);
+  for (int i = 0; i < result2.size(); i++) {
+    result2[i].setValor(1);
+    board_[result2[i].getX()][result2[i].getY()].setValor(result2[i].getValor());
+  }
+  long time_final = clock();
+  double time = double((time_final - time_init));
+  std::cout << "Tiempo de ejecución" << time;
+}
+
+
+void Board::setHeuristic(int option) {
+  if (option == 0){
+      heuristic_ = new d_manhattan();
+  }
+  else{
+      heuristic_ = new d_euclidea();
+  }
+}
+
+
+
+void Board::setVecinos() {
+  for (int i = 0; i < board_.size(); i++) {
+    for (int j = 0; j < board_[i].size(); j++) {
+      setVecino(i, j);
+    }
+  }
+}
+
+void Board::setVecino(int i, int j) {
+  if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].getValor() != 2){
+      if(i-1 >= 0){
+          if(board_[static_cast<unsigned int>(i-1)][static_cast<unsigned int>(j)].getValor() != 2){
+              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i-1)][static_cast<unsigned int>(j)]);
+          }
+      }
+      if(static_cast<unsigned int>(i+1) < board_.size()){
+          if(board_[static_cast<unsigned int>(i+1)][static_cast<unsigned int>(j)].getValor() != 2){
+              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i+1)][static_cast<unsigned int>(j)]);
+          }
+      }
+      if(j-1 >= 0){
+          if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j-1)].getValor() != 2){
+              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j-1)]);
+          }
+      }
+      if(static_cast<unsigned int>(j+1) < board_[static_cast<unsigned int>(i)].size()){
+          if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j+1)].getValor() != 2){
+              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j+1)]);
+          }
+      }
+  }
 }

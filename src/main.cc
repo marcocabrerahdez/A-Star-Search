@@ -13,6 +13,13 @@
  */
 #include "../include/Board.h"
 
+#include "Board.cc"
+#include "Taxi.cc"
+#include "Heuristic.cc"
+#include "Cell.cc"
+#include "Colors.cc"
+
+
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -92,9 +99,18 @@ int main(void){
     tablero.changeState(X_puntoA,Y_puntoA,3);
     tablero.changeState(X_puntoB,Y_puntoB,4);
 
+    int opcion_heuristica = 0;
+    out_of_bounds = false;
+    //while (opcion_heuristica >= 0 || opcion_heuristica <= 1){
+      //if (out_of_bounds == true){
+        //std::cout << "Opcion no correcta, vuelva a introducirlo" << std::endl;
+      //}
+      std::cout << "¿Que heuristica quieres utilizar (0 ecludiana, 1 manhattan)" << std::endl;
+      std::cin >> opcion_heuristica;
+      //out_of_bounds = true;
+    //}
     std::cout << "¿Quiere introducir los obstáculos por pantalla o cargar un fichero de coordenadas (X,Y)? (0 por fichero, 1 por pantalla)" << std::endl;
     std::cin >> opcion;
-
     switch (opcion) {
       case 0:
         std::cout << "Introduzca el nombre del fichero:" << std::endl;
@@ -133,6 +149,10 @@ int main(void){
         }
         break;
     }
+    tablero.setHeuristic(opcion_heuristica);
+    //tablero.a_star(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
+    tablero.caminoOptimo(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
+
     // Print the board
     if (print_file == true) {
       fichero_out.open("output.txt");

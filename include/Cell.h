@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <vector>
+#include <limits.h>
 
 enum State {FREE, STEPPED, OBSTACLE, INITIAL, END};
 
