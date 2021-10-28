@@ -235,8 +235,8 @@ bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
 }
 
 
-
-/*std::vector<Cell> Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal) {
+// No funciona bien aun, falta buscar camino minimo
+std::vector<Cell> Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal) {
   std::vector<Cell> result;                                             
   std::vector<Cell> setAbierto;
   std::vector<Cell> setCerrado;
@@ -285,4 +285,4 @@ bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
     }
   }
   return result;
-}*/
+}
