@@ -62,7 +62,12 @@ class Board {
     bool is_in_set(const Cell& c, const std::vector<Cell>& s);
     std::vector<Cell> a_star(int xInicio, int yInicio, int xFinal, int yFinal);
     void gestionar_vecino(std::vector<Cell>& open, Cell celda_vecina);
-    void reconstruir_camino(Cell celda);
+    // Falta por hacer
+    // void reconstruir_camino(Cell celda);
+    // void caminoOptimo(int xInicio, int yInicio, int xFinal, int yFinal);
+    // void setVecino(int x, int y);
+    // void setVecino();
+    
     static int contador;
   private:
     // Rows of the board

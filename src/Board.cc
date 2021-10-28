@@ -251,18 +251,21 @@ std::vector<Cell> Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal
 
   while(!setAbierto.empty()){
     unsigned int winner = 0;
-    for(unsigned int i = 0; i < setAbierto.size(); i++){           
-        if(setAbierto[i].getf_() < setAbierto[winner].getf_())
-            winner = i;
+    for(unsigned int i = 0; i < setAbierto.size(); i++) {     
+      // nos quedamos con el camino de menor coste      
+      if(setAbierto[i].getf_() < setAbierto[winner].getf_())
+        winner = i;
     }
-    Cell actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()];
-
-    if((actual.getX() == xFinal) && (yFinal == actual.getY())){    
-        return result;
+    Cell actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()]; 
+    // Si es la misma celda -> Hemos llegado al final con camino óptimo
+    if((actual.getX() == xFinal) && (yFinal == actual.getY())) {  
+      // -> Funcion de reconstruir camno (Propagar) 
+      return result;
     }
     setAbierto.erase(setAbierto.begin() + winner);                
     setCerrado.push_back(actual);
-    for(int i = 0; i < actual.sizeVecinos(); i++){                 
+    // Miramos los vecinos de la Celda actual
+    for(int i = 0; i < actual.sizeVecinos(); i++) {                 
       int x = actual.getVecino(i).first;
       int y = actual.getVecino(i).second;
       Cell vecino = board_[x][y];              
@@ -271,14 +274,14 @@ std::vector<Cell> Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal
 
       int tent_g = actual.getg_() + 1;
 
-      if(!is_in_set(vecino, setAbierto)){
-          setAbierto.push_back(vecino);
-          contador++;
+      if(!is_in_set(vecino, setAbierto)) {
+        setAbierto.push_back(vecino);
+        contador++;
       }
       else if(tent_g >= vecino.getg_())
-          continue;
+        continue;
 
-      //Este camino es el mejor! Guárdalo
+      // Este camino es el mejor! Guárdalo
       board_[vecino.getX()][vecino.getY()].setPadre(actual);
       board_[vecino.getX()][vecino.getY()].setg_(tent_g);
       board_[vecino.getX()][vecino.getY()].setf_(tent_g + (*heuristic_)(vecino, Final));
