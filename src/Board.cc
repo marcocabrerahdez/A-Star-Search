@@ -9,7 +9,7 @@ Board::Board(const int& rows, const int& cols) {
   // Initialize board dimensions
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
-      board_[i][j].set_estado(FREE);
+      board_[i][j].setValor(FREE);
     }
   }
 }
@@ -37,18 +37,6 @@ Cell& Board::getCell(const int& x, const int& y) {
 
 
 
-Position Board::getInitial() const {
-  return initial_;
-}
-
-
-
-Position Board::getGoal() const {
-  return goal_;
-}
-
-
-
 // @brief sets rows
 void Board::setRows(const int& rows) {
   rows_ = rows;
@@ -59,20 +47,6 @@ void Board::setRows(const int& rows) {
 // @brief sets columns
 void Board::setCols(const int& cols) {
   cols_ = cols;
-}
-
-
-
-void Board::setInitial(const int& rows, const int& cols) {
-  initial_.xCoord = rows;
-  initial_.yCoord = cols;
-}
-
-
-
-void Board::setGoal(const int& rows, const int& cols) {
-  goal_.xCoord = rows;
-  goal_.yCoord = cols;
 }
 
 
@@ -90,10 +64,7 @@ void Board::setBoard(const int& rows, const int& cols) {
 
 // @brief changes state of the cell
 void Board::changeState(const int& x, const int& y, const int& state) {
-  
-  board_[x][y].set_estado(state);
-
-  
+  board_[x][y].setValor(state);
 }
 
 
@@ -103,7 +74,7 @@ bool Board::createObstacle(const int& x, const int& y) {
   Cell dummy;
   if(x >= 0 && y >= 0 && x <= getRows() && y <= getCols()) {
     dummy = getCell(x, y);
-    if (dummy.get_estado() == 0) {
+    if (dummy.getValor() == 0) {
       changeState(x, y, 2);
       return true;
     }
@@ -139,7 +110,7 @@ void Board::createRandomObstacle(int& obstacles) {
 void Board::printCell(const int& x, const int& y) {
   Colors color;
   Cell dummy = getCell(x, y);
-  switch (dummy.get_estado()) {
+  switch (dummy.getValor()) {
     case FREE:
       std::cout << color.writeWhite("·");
       break;
@@ -170,7 +141,7 @@ void Board::printCell(const int& x, const int& y) {
 // @brief prints a cell on the board based on its state
 void Board::printCell(const int& x, const int& y, std::ofstream& fout) {
   Cell dummy = getCell(x, y);
-  switch (dummy.get_estado()) {
+  switch (dummy.getValor()) {
     case FREE:
       fout << "·";
       break;
@@ -222,3 +193,96 @@ int Board::readCoordFile(std::ifstream& coord_file) {
 }
 
 
+
+// @brief prints the board on screen
+void Board::printBoard(Taxi taxi) {
+  for (int i = 0; i < getRows(); i++) {
+    std::cout << "\n";
+    for (int j = 0; j < getCols(); j++) {
+      if (i == taxi.getX_coord() && j == taxi.getY_coord())
+        taxi.printTaxi();
+      else 
+        printCell(i, j);
+    }
+  }
+  std::cout << std::endl;
+}
+
+
+
+// @brief prints the board on screen
+void Board::printBoard(Taxi taxi, std::ofstream& fout) {
+  for (int i = 0; i < getRows(); i++) {
+    fout << "\n";
+    for (int j = 0; j < getCols(); j++) {
+      if (i == taxi.getX_coord() && j == taxi.getY_coord())
+        taxi.printTaxi(fout);
+      else 
+        printCell(i, j, fout);
+    }
+  }
+  fout << std::endl;
+}
+
+
+
+bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
+  for(unsigned int i = 0; i < s.size(); i++) {
+    if(s[i].getX() == c.getX() && s[i].getY() == c.getY())
+      return true;
+  }
+  return false;
+}
+
+
+
+/*std::vector<Cell> Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal) {
+  std::vector<Cell> result;                                             
+  std::vector<Cell> setAbierto;
+  std::vector<Cell> setCerrado;
+  Cell& Inicial = board_[xInicio][yInicio];
+  Cell& Final = board_[xFinal][yFinal];
+
+  Inicial.setg_(0);                                                  
+  Inicial.setf_((*heuristic_)(Inicial, Final));
+
+  setAbierto.push_back(Inicial);                                     
+  contador++;
+
+  while(!setAbierto.empty()){
+    unsigned int winner = 0;
+    for(unsigned int i = 0; i < setAbierto.size(); i++){           
+        if(setAbierto[i].getf_() < setAbierto[winner].getf_())
+            winner = i;
+    }
+    Cell actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()];
+
+    if((actual.getX() == xFinal) && (yFinal == actual.getY())){    
+        return result;
+    }
+    setAbierto.erase(setAbierto.begin() + winner);                
+    setCerrado.push_back(actual);
+    for(int i = 0; i < actual.sizeVecinos(); i++){                 
+      int x = actual.getVecino(i).first;
+      int y = actual.getVecino(i).second;
+      Cell vecino = board_[x][y];              
+      if(is_in_set(vecino, setCerrado))
+          continue;
+
+      int tent_g = actual.getg_() + 1;
+
+      if(!is_in_set(vecino, setAbierto)){
+          setAbierto.push_back(vecino);
+          contador++;
+      }
+      else if(tent_g >= vecino.getg_())
+          continue;
+
+      //Este camino es el mejor! Guárdalo
+      board_[vecino.getX()][vecino.getY()].setPadre(actual);
+      board_[vecino.getX()][vecino.getY()].setg_(tent_g);
+      board_[vecino.getX()][vecino.getY()].setf_(tent_g + (*heuristic_)(vecino, Final));
+    }
+  }
+  return result;
+}*/

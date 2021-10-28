@@ -15,8 +15,6 @@
 #define _TAXI_H
 
 #include "Colors.h"
-#include "Board.h"
-#include "Position.h"
 
 #include <iostream>
 #include <vector>
@@ -32,31 +30,14 @@ class Taxi {
     
     int getX_coord() const;
     int getY_coord() const;
-    Position getPosition_coord() const;
-
-    std::vector<Position> get_neighbors();
-
-    float d_euclidea(const Board& board, const Position f);
-    float d_manhattan(const Board& board, const Position f);
-
-    void set_neighbor_4(const Board& tablero) const;
-    void set_neighbor_8(const Board& tablero) const;
-    // Prints the board
-    void printBoard(Board taxi);
-    // Prints the board in a file
-    void printBoard(Board taxi, std::ofstream& fout);
     // Prints the taxi in the board
     void printTaxi();
     void printTaxi(std::ofstream& fout);
-    void a_star(Board board, int option);
-
   private:
+    int xCoord;
+    int yCoord;
     // Specifies current direction of the taxi
     int direction_;
-    // Specifies the current position of the taxi
-    Position position_;
-    // Store accesible board cordinates 4 or 8
-    std::vector<Position> neighbors_;
 
     clock_t time_;
 };

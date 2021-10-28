@@ -15,8 +15,9 @@
 #define _BOARD_H_
 
 #include "Colors.h"
-#include "Position.h"
 #include "Cell.h"
+#include "Taxi.h"
+#include "Heuristic.h"
 
 #include <iostream>
 #include <fstream>
@@ -26,6 +27,7 @@
 
 class Board {
   public:
+    Board() = default;
     Board(const int& rows, const int& cols);
     
     // Getters
@@ -34,8 +36,8 @@ class Board {
     Cell& getCell(const int& x, const int& y);
     // Reads the coordinates given from a file
     int readCoordFile(std::ifstream& coord_file);
-    Position getInitial() const;
-    Position getGoal() const;
+    Cell getInitial() const;
+    Cell getGoal() const;
     // Setters
     void setRows(const int& rows);
     void setCols(const int& cols);
@@ -50,19 +52,27 @@ class Board {
     void printCell(const int& x, const int& y);
     // Print a specific cell of the board in a file
     void printCell(const int& x, const int& y, std::ofstream& fout);
+    // Prints the board
+    void printBoard(Taxi taxi);
+    // Prints the board in a file
+    void printBoard(Taxi taxi, std::ofstream& fout);
     // Checks if the obstacle option is on
     bool createObstacle(const int& x, const int& y);
+
+    bool is_in_set(const Cell& c, const std::vector<Cell>& s);
+    std::vector<Cell> a_star(int xInicio, int yInicio, int xFinal, int yFinal);
+    void gestionar_vecino(std::vector<Cell>& open, Cell celda_vecina);
+    void reconstruir_camino(Cell celda);
+    static int contador;
   private:
     // Rows of the board
     int rows_;
     // Columns of the board
     int cols_;
-    // Stores de initial point
-    Position initial_;
-    // Stores the end point
-    Position goal_;
     // Stores the board
     std::vector<std::vector<Cell> > board_;
+
+    Heurisitc* heuristic_;
 };
 
 #endif // _BOARD_H_

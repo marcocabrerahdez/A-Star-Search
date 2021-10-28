@@ -15,23 +15,41 @@
 #define CELL_H_
 
 #include <iostream>
+#include <vector>
 
 enum State {FREE, STEPPED, OBSTACLE, INITIAL, END};
 
 class Cell {
   public:
-    Cell(void);
-    Cell(int row, int col, int estado);
-    int get_estado(void) const;
-    float get_costeG(void) const;
-    void set_estado(int estado);
-    void set_costeG(float coste);
-  private:
-    int row_;
-    int col_;
-    double f_; // Costo estimado desde nodo inicial a nodo objetivo (g(n) + h(n))
-    double h_; // Costo estimado desde este nodo al nodo objetivo
-    double g_; // Coste desde el nodo inicial a este nodo
+    Cell();
+    Cell(int x, int y, int valor = 0, int g = INT_MAX , int f = INT_MAX);
+
+    int getValor();
+    int getX() const;
+    int getY() const;
+    int getf_();                             
+    int getg_();                
+    
+    void setValor(int valor);
+    void setg_(int g);
+    void setf_(int f); 
+
+    std::pair<int,int> getPadre() const;
+    std::pair<int,int> getPadre();
+    void setPadre(const Cell&);
+
+    unsigned int sizeVecinos();
+    std::pair<int, int> getVecino(int i);
+    void resetVecinos();
+    void addVecino(const Cell&);
+  private:  
+    int valor_;
+    int g_;                            
+    int f_;                             
+    int x_;                          
+    int y_;
+    std::vector<std::pair<int, int> > vecinos_;
+    std::pair<int, int> padre_;
 };
 
 #endif // CELL_H_
