@@ -39,6 +39,7 @@ class Taxi {
     // Specifies current direction of the taxi
     int direction_;
 
+
     clock_t time_;
 };
 

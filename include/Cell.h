@@ -35,6 +35,7 @@ class Cell {
     void setg_(int g);
     void setf_(int f); 
 
+
     std::pair<int,int> getPadre() const;
     std::pair<int,int> getPadre();
     void setPadre(const Cell&);

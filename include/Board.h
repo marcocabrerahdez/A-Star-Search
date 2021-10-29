@@ -69,6 +69,7 @@ class Board {
     void setVecinos();
     void setVecino(int i, int j);
 
+
     long int expanded_nodes = 0;
 
   private:

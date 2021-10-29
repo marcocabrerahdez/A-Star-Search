@@ -18,6 +18,7 @@
 
 #include <cmath>
 
+
 class Heuristic {
   public:
     Heuristic() = default;
