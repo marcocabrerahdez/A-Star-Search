@@ -22,7 +22,7 @@
 #include <cmath>
 #include <ctime>
 
-enum direction {NORTH, EAST, SOUTH, WEST};
+enum Direction {NORTH, EAST, SOUTH, WEST};
 
 class Taxi {
   public:
@@ -30,6 +30,10 @@ class Taxi {
     
     int getX_coord() const;
     int getY_coord() const;
+    void setX_coord(int x);
+    void setY_coord(int y);
+    void setDirection(Direction dir);
+    int getDirection();
     // Prints the taxi in the board
     void printTaxi();
     void printTaxi(std::ofstream& fout);

@@ -40,17 +40,20 @@ class Cell {
     void setPadre(const Cell&);
 
     unsigned int sizeVecinos();
-    std::pair<int, int> getVecino(int i);
+    Cell& getVecino(int i);
     void resetVecinos();
-    void addVecino(const Cell&);
+    void addVecino(Cell&, int);
+    int getDirection();
+    void setDirection(int);
   private:  
     int valor_;
     int g_;                            
     int f_;                             
     int x_;                          
     int y_;
-    std::vector<std::pair<int, int> > vecinos_;
+    std::vector<Cell> vecinos_;
     std::pair<int, int> padre_;
+    int relative_direction;
 };
 
 #endif // CELL_H_

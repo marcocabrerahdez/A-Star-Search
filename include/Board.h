@@ -58,6 +58,8 @@ class Board {
     void printBoard(Taxi taxi);
     // Prints the board in a file
     void printBoard(Taxi taxi, std::ofstream& fout);
+    void printBoard(Taxi taxi, std::ofstream& fout, bool debug);
+    void printCell(const int& x, const int& y, std::ofstream& fout, int debug);
     // Checks if the obstacle option is on
     bool createObstacle(const int& x, const int& y);
 
@@ -66,8 +68,11 @@ class Board {
     void gestionar_vecino(std::vector<Cell> open, Cell celda_vecina);
     void reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell I);
     bool caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal);
-    void setVecinos();
-    void setVecino(int i, int j);
+    void setVecinos(Cell&);
+    //void setVecino(int i, int j);
+
+    void updateTaxi(Cell c);
+    void setTaxi(Taxi* taxi);
 
     long int expanded_nodes = 0;
 
@@ -78,7 +83,7 @@ class Board {
     int cols_;
     // Stores the board
     std::vector<std::vector<Cell> > board_;
-
+    Taxi* taxi_;
     Heuristic* heuristic_;
 
 };
