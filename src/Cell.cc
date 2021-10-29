@@ -84,7 +84,7 @@ unsigned int Cell::sizeVecinos(){
 
 
 
-std::pair<int, int> Cell::getVecino(int i){
+Cell& Cell::getVecino(int i){
   return vecinos_[static_cast<int>(i)];
 }
 
@@ -96,6 +96,15 @@ void Cell::resetVecinos(){
 
 
 
-void Cell::addVecino(const Cell& c){
-  vecinos_.push_back(std::make_pair(c.getX(), c.getY()));
+void Cell::addVecino(Cell& c, int relative_direction){
+  c.setDirection(relative_direction);
+  vecinos_.push_back(c);
+}
+
+void Cell::setDirection(int direction){
+  relative_direction = direction;
+}
+
+int Cell::getDirection(){
+  return relative_direction;
 }

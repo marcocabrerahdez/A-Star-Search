@@ -13,12 +13,12 @@
  */
 #include "../include/Board.h"
 
-/*#include "Board.cc"
+#include "Board.cc"
 #include "Taxi.cc"
 #include "Heuristic.cc"
 #include "Cell.cc"
 #include "Colors.cc"
-*/
+
 
 #include <stdio.h>
 #include <iostream>
@@ -41,6 +41,7 @@ int main(void){
     
     std::ifstream fichero;
     std::ofstream fichero_out;
+    std::ofstream coord_out;
     std::string file_name;
 
     struct winsize w;
@@ -96,6 +97,7 @@ int main(void){
       else out_of_bounds = false;
     }
     Taxi taxi(X_puntoA, Y_puntoA);
+    tablero.setTaxi(&taxi);
     tablero.changeState(X_puntoA,Y_puntoA,3);
     tablero.changeState(X_puntoB,Y_puntoB,4);
 
@@ -152,7 +154,14 @@ int main(void){
     tablero.setHeuristic(opcion_heuristica);
     //tablero.a_star(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
     tablero.caminoOptimo(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
-
+    bool coord_file = false;
+    std::cout << "¿Quieres sacar un fichero de las coordenadas de los obstaculos generados (0 no, 1 si)?" << std::endl;
+    std::cin >> coord_file;
+    if (coord_file){
+      coord_out.open("obstacles_coord.txt");
+      tablero.printBoard(taxi, coord_out, 1);
+    }
+    
     // Print the board
     if (print_file == true) {
       fichero_out.open("output.txt");

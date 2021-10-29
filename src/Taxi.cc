@@ -32,6 +32,25 @@ int Taxi::getY_coord() const {
 }
 
 
+void Taxi::setX_coord(int x){
+  xCoord = x;
+}
+
+void Taxi::setY_coord(int y){
+  yCoord = y;
+}
+
+
+void Taxi::setDirection(Direction dir){
+  direction_ = dir;
+}
+
+int Taxi::getDirection(){
+  return direction_;
+}
+
+
+
 void Taxi::printTaxi(void) {
   Colors color;
   switch (direction_) {

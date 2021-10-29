@@ -176,6 +176,43 @@ void Board::printCell(const int& x, const int& y, std::ofstream& fout) {
 
 
 
+void Board::printCell(const int& x, const int& y, std::ofstream& fout, int debug) {
+  Cell dummy = getCell(x, y);
+  if (dummy.getValor() == OBSTACLE){
+    fout << x << " " << y << std::endl;
+  }
+  /*
+  switch (dummy.getValor()) {
+    case FREE:
+      fout << "·";
+      break;
+
+    case STEPPED:
+      fout << "X";
+      break;
+
+    case OBSTACLE:
+      fout << "█";
+      break;
+
+    case INITIAL:
+      fout << "A";
+      break;
+
+    case END:
+      fout << "B";
+      break;
+    
+    default:
+        break;
+  }
+  */
+}
+
+
+
+
+
 // @brief reads a coordinate from a file and assigns it to a cell on the board
 // @return count of obstacles placed in the board
 int Board::readCoordFile(std::ifstream& coord_file) {
@@ -231,6 +268,23 @@ void Board::printBoard(Taxi taxi, std::ofstream& fout) {
   fout << std::endl;
 }
 
+
+void Board::printBoard(Taxi taxi, std::ofstream& fout, bool debug) {
+  for (int i = 0; i < getRows(); i++) {
+    for (int j = 0; j < getCols(); j++) {
+      if (i == taxi.getX_coord() && j == taxi.getY_coord())
+        taxi.printTaxi(fout);
+      else 
+        printCell(i, j, fout, debug);
+    }
+  }
+  fout << std::endl;
+}
+
+
+
+
+
 void Board::setInitial(const int& rows, const int& cols){}
 
 
@@ -255,8 +309,7 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
   std::vector<Cell> setCerrado;
   Cell& Inicial = board_[xInicio][yInicio];
   Cell& Final = board_[xFinal][yFinal];
-
-
+  int dir;
   Inicial.setg_(0);         
   //Añadir metodo de eleccion de heuristica                                         
   Inicial.setf_((*heuristic_)(Inicial, Final));
@@ -264,26 +317,37 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
   setAbierto.push_back(Inicial);                                     
   while(!setAbierto.empty()){
     unsigned int winner = 0;
+    bool equals = true;
     for(unsigned int i = 0; i < setAbierto.size(); i++) {     
       // nos quedamos con el camino de menor coste      
-      if(setAbierto[i].getf_() < setAbierto[winner].getf_())
+      if(setAbierto[i].getf_() < setAbierto[winner].getf_()){
         winner = i;
+        equals = false;
+      }
     }
-    Cell& actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()]; 
+      if(equals){
+        for(unsigned int i = 0; i < setAbierto.size(); i++) {     
+        // nos quedamos con el camino de menor coste      
+          if(dir == setAbierto[i].getDirection()){
+            winner = i;
+          }
+        }
+      }
+    Cell& actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()];
+    dir = actual.getDirection();
     // Si es la misma celda -> Hemos llegado al final con camino óptimo
     if((actual.getX() == xFinal) && (yFinal == actual.getY())) { 
       reconstruir_camino(result, actual, Inicial);
       return result;
     }
     setAbierto.erase(setAbierto.begin() + winner);
-    setVecino(actual.getX(),actual.getY());
+    setVecinos(actual);
     expanded_nodes++;                
     setCerrado.push_back(actual);
 
-    for(unsigned int i = 0; i < actual.sizeVecinos(); i++) {                 
-      int x = actual.getVecino(i).first;
-      int y = actual.getVecino(i).second;
-      Cell& vecino = board_[x][y];            
+    for(unsigned int i = 0; i < actual.sizeVecinos(); i++) {    
+
+      Cell& vecino = board_[actual.getVecino(i).getX()][actual.getVecino(i).getY()];            
       if(is_in_set(vecino, setCerrado))
           continue;
 
@@ -294,6 +358,7 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
         board_[vecino.getX()][vecino.getY()].setPadre(actual);
         board_[vecino.getX()][vecino.getY()].setg_(tent_g);
         board_[vecino.getX()][vecino.getY()].setf_(tent_g + (*heuristic_)(vecino, Final));
+        updateTaxi(vecino);
         setAbierto.push_back(vecino);
         //contador++;
       }
@@ -323,7 +388,7 @@ bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned in
   }
   if(board_[xFinal][yFinal].getValor() == 4){
       board_[xFinal][yFinal].setValor(4);
-      if(static_cast<int>(xFinal) - 1 >= 0){
+      /*if(static_cast<int>(xFinal) - 1 >= 0){
           setVecino(xFinal - 1, yFinal);
       }
       if(xFinal + 1 < board_.size()){
@@ -335,6 +400,7 @@ bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned in
       if(yFinal + 1 < board_[0].size()){
           setVecino(xFinal, yFinal + 1);
       }
+      */
   }
   long time_init = clock();
   std::vector<Cell> result;
@@ -365,35 +431,46 @@ void Board::setHeuristic(int option) {
 
 
 
-void Board::setVecinos() {
+/*void Board::setVecinos() {
   for (int i = 0; i < board_.size(); i++) {
     for (int j = 0; j < board_[i].size(); j++) {
       setVecino(i, j);
     }
   }
 }
-
-void Board::setVecino(int i, int j) {
-  if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].getValor() != 2){
-      if(i-1 >= 0){
-          if(board_[static_cast<unsigned int>(i-1)][static_cast<unsigned int>(j)].getValor() != 2){
-              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i-1)][static_cast<unsigned int>(j)]);
+*/
+void Board::setVecinos(Cell& c) {
+  if(c.getValor() != 2){
+      if((c.getX()-1) >= 0){
+          if(board_[static_cast<unsigned int>((c.getX()-1))][static_cast<unsigned int>(c.getY())].getValor() != 2){
+              board_[static_cast<unsigned int>(c.getX())][static_cast<unsigned int>(c.getY())].addVecino(board_[static_cast<unsigned int>((c.getX()-1))][static_cast<unsigned int>(c.getY())], WEST);
           }
       }
-      if(static_cast<unsigned int>(i+1) < board_.size()){
-          if(board_[static_cast<unsigned int>(i+1)][static_cast<unsigned int>(j)].getValor() != 2){
-              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i+1)][static_cast<unsigned int>(j)]);
+      if(static_cast<unsigned int>((c.getX()+1)) < board_.size()){
+          if(board_[static_cast<unsigned int>((c.getX()+1))][static_cast<unsigned int>(c.getY())].getValor() != 2){
+              board_[static_cast<unsigned int>(c.getX())][static_cast<unsigned int>(c.getY())].addVecino(board_[static_cast<unsigned int>((c.getX()+1))][static_cast<unsigned int>(c.getY())], EAST);
           }
       }
-      if(j-1 >= 0){
-          if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j-1)].getValor() != 2){
-              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j-1)]);
+      if((c.getY()-1) >= 0){
+          if(board_[static_cast<unsigned int>(c.getX())][static_cast<unsigned int>((c.getY()-1))].getValor() != 2){
+              board_[static_cast<unsigned int>(c.getX())][static_cast<unsigned int>(c.getY())].addVecino(board_[static_cast<unsigned int>(c.getX())][static_cast<unsigned int>((c.getY()-1))], SOUTH);
           }
       }
-      if(static_cast<unsigned int>(j+1) < board_[static_cast<unsigned int>(i)].size()){
-          if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j+1)].getValor() != 2){
-              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j+1)]);
+      if(static_cast<unsigned int>((c.getY()+1)) < board_[static_cast<unsigned int>(c.getX())].size()){
+          if(board_[static_cast<unsigned int>(c.getX())][static_cast<unsigned int>(c.getY()+1)].getValor() != 2){
+              board_[static_cast<unsigned int>(c.getX())][static_cast<unsigned int>(c.getY())].addVecino(board_[static_cast<unsigned int>(c.getX())][static_cast<unsigned int>(c.getY()+1)], NORTH);
           }
       }
   }
+}
+
+
+void Board::setTaxi(Taxi* taxi){
+  taxi_ = taxi;
+}
+
+void Board::updateTaxi(Cell c){
+  taxi_->setX_coord(c.getX());
+  taxi_->setY_coord(c.getY());
+  taxi_->setDirection(static_cast<Direction>(c.getDirection()));
 }
