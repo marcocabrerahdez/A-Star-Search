@@ -68,8 +68,8 @@ class Board {
     bool caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal);
     void setVecinos();
     void setVecino(int i, int j);
-    
-    int contador = 0;
+
+    long int expanded_nodes = 0;
 
   private:
     // Rows of the board
@@ -80,6 +80,7 @@ class Board {
     std::vector<std::vector<Cell> > board_;
 
     Heuristic* heuristic_;
+
 };
 
 #endif // _BOARD_H_

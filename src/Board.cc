@@ -261,7 +261,6 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
   Inicial.setf_((*heuristic_)(Inicial, Final));
 
   setAbierto.push_back(Inicial);                                     
-  contador++;
   while(!setAbierto.empty()){
     unsigned int winner = 0;
     for(unsigned int i = 0; i < setAbierto.size(); i++) {     
@@ -276,7 +275,8 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
       return result;
     }
     setAbierto.erase(setAbierto.begin() + winner);
-    setVecino(actual.getX(),actual.getY());                
+    setVecino(actual.getX(),actual.getY());
+    expanded_nodes++;                
     setCerrado.push_back(actual);
 
     for(unsigned int i = 0; i < actual.sizeVecinos(); i++) {                 
@@ -290,7 +290,7 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
 
       if(!is_in_set(vecino, setAbierto)) {
         setAbierto.push_back(vecino);
-        contador++;
+        //contador++;
       }
       else if(tent_g >= vecino.getg_())
         continue;
@@ -338,13 +338,18 @@ bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned in
   long time_init = clock();
   std::vector<Cell> result;
   std::vector<Cell>& result2 = a_star(xInicio, yInicio, xFinal, yFinal, result);
-  for (int i = 0; i < result2.size(); i++) {
+  long time_final = clock();
+  double time = double((time_final - time_init));
+  float seconds = time/CLOCKS_PER_SEC;
+  std::cout << "Tiempo de ejecución (ciclos 1M/s): " << time << std::endl << "Tiempo de ejecución (segundos): " << seconds << std::endl;
+  std::cout << "Nodos expandidos: " << expanded_nodes << std::endl;
+  int i = 0;
+  for (i = 0; i < result2.size(); i++) {
     result2[i].setValor(1);
     board_[result2[i].getX()][result2[i].getY()].setValor(result2[i].getValor());
   }
-  long time_final = clock();
-  double time = double((time_final - time_init));
-  std::cout << "Tiempo de ejecución" << time;
+  board_[xFinal][yFinal].setValor(4);
+
 }
 
 

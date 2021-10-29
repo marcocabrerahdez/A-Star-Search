@@ -13,12 +13,12 @@
  */
 #include "../include/Board.h"
 
-#include "Board.cc"
+/*#include "Board.cc"
 #include "Taxi.cc"
 #include "Heuristic.cc"
 #include "Cell.cc"
 #include "Colors.cc"
-
+*/
 
 #include <stdio.h>
 #include <iostream>
