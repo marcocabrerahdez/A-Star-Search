@@ -256,6 +256,7 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
   Cell& Inicial = board_[xInicio][yInicio];
   Cell& Final = board_[xFinal][yFinal];
 
+
   Inicial.setg_(0);         
   //Añadir metodo de eleccion de heuristica                                         
   Inicial.setf_((*heuristic_)(Inicial, Final));
@@ -282,23 +283,23 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
     for(unsigned int i = 0; i < actual.sizeVecinos(); i++) {                 
       int x = actual.getVecino(i).first;
       int y = actual.getVecino(i).second;
-      Cell vecino = board_[x][y];            
+      Cell& vecino = board_[x][y];            
       if(is_in_set(vecino, setCerrado))
           continue;
 
       int tent_g = actual.getg_() + 1;
 
       if(!is_in_set(vecino, setAbierto)) {
+      // Este camino es el mejor! Guárdalo
+        board_[vecino.getX()][vecino.getY()].setPadre(actual);
+        board_[vecino.getX()][vecino.getY()].setg_(tent_g);
+        board_[vecino.getX()][vecino.getY()].setf_(tent_g + (*heuristic_)(vecino, Final));
         setAbierto.push_back(vecino);
         //contador++;
       }
       else if(tent_g >= vecino.getg_())
         continue;
 
-      // Este camino es el mejor! Guárdalo
-      board_[vecino.getX()][vecino.getY()].setPadre(actual);
-      board_[vecino.getX()][vecino.getY()].setg_(tent_g);
-      board_[vecino.getX()][vecino.getY()].setf_(tent_g + (*heuristic_)(vecino, Final));
     }
   }
   return result;
@@ -318,7 +319,7 @@ void Board::reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell i) {
 bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal) {
   if(board_[xInicio][yInicio].getValor() == 3){
       board_[xInicio][yInicio].setValor(3);
-      setVecino(static_cast<unsigned int>(xInicio), static_cast<unsigned int>(yInicio));
+      //setVecino(static_cast<unsigned int>(xInicio), static_cast<unsigned int>(yInicio));
   }
   if(board_[xFinal][yFinal].getValor() == 4){
       board_[xFinal][yFinal].setValor(4);
