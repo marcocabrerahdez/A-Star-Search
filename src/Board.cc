@@ -269,7 +269,7 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
       if(setAbierto[i].getf_() < setAbierto[winner].getf_())
         winner = i;
     }
-    Cell actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()]; 
+    Cell& actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()]; 
     // Si es la misma celda -> Hemos llegado al final con camino óptimo
     if((actual.getX() == xFinal) && (yFinal == actual.getY())) { 
       reconstruir_camino(result, actual, Inicial);
