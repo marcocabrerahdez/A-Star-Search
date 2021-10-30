@@ -8,8 +8,7 @@
  * @class Taxi
  * @brief Creates a Taxi object to walk the path
  *
- *
- * @date
+ * @date 02/11/2021
 */
 #ifndef _TAXI_H
 #define _TAXI_H
@@ -38,8 +37,7 @@ class Taxi {
     int yCoord;
     // Specifies current direction of the taxi
     int direction_;
-
-
+    // Represent execution time 
     clock_t time_;
 };
 

@@ -8,15 +8,15 @@
  * @class Board
  * @brief Creates a Board object to create a 2 dimension board
  *
- *
- * @date
+ * @date 02/11/2021
 */
 #ifndef CELL_H_
 #define CELL_H_
 
+#include <limits.h>
+
 #include <iostream>
 #include <vector>
-#include <limits.h>
 
 enum State {FREE, STEPPED, OBSTACLE, INITIAL, END};
 

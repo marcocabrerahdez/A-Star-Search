@@ -5,11 +5,10 @@
  * @author Marco Antonio Cabrera Hernández
  * @author Jose Antonio Trujillo Mendoza
  * @author Mario Hernández García
- * @class Taxi
- * @brief Creates a Taxi object to walk the path
+ * @class Heuristic 
+ * @brief Contents the heuristic function that will be used to calculate the path
  *
- *
- * @date
+ * @date 02/11/2021
 */
 #ifndef F_HEURISTICS_H
 #define F_HEURISTICS_H
@@ -17,7 +16,6 @@
 #include "Cell.h"
 
 #include <cmath>
-
 
 class Heuristic {
   public:
@@ -27,7 +25,7 @@ class Heuristic {
     virtual int operator()(const Cell&, const Cell&) = 0;
 };
 
-//-----------------------DISTANCIA EUCLIDEA-------------------------
+
 
 class d_euclidea : public Heuristic {
 public:
@@ -35,7 +33,7 @@ public:
     int operator()(const Cell&, const Cell&);
 };
 
-//-----------------------DISTANCIA RECTILINEA-----------------------
+
 
 class d_manhattan : public Heuristic {
 public:

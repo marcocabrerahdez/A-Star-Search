@@ -9,11 +9,10 @@
  * @brief Returns a color for each element of the game
  *
  *
- * @date
+ * @date 02/11/2021
 */
 #ifndef COLORS_H_
 #define COLORS_H_
-
 
 #include <iostream>
 #include <string>
