@@ -65,7 +65,7 @@ class Board {
     std::vector<Cell>& a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result);
     void gestionar_vecino(std::vector<Cell> open, Cell celda_vecina);
     void reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell I);
-    bool caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal);
+    bool caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal, Taxi& taxi);
     void setVecinos();
     void setVecino(int i, int j);
 

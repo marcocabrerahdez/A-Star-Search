@@ -316,7 +316,7 @@ void Board::reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell i) {
   }
 }
 
-bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal) {
+bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal, Taxi& taxi) {
   if(board_[xInicio][yInicio].getValor() == 3){
       board_[xInicio][yInicio].setValor(3);
       //setVecino(static_cast<unsigned int>(xInicio), static_cast<unsigned int>(yInicio));
@@ -345,6 +345,8 @@ bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned in
   std::cout << "Tiempo de ejecución (ciclos 1M/s): " << time << std::endl << "Tiempo de ejecución (segundos): " << seconds << std::endl;
   std::cout << "Nodos expandidos: " << expanded_nodes << std::endl;
   int i = 0;
+  Taxi taxi2(result2[0].getX(),result2[0].getY());
+  taxi = taxi2;
   for (i = 0; i < result2.size(); i++) {
     result2[i].setValor(1);
     board_[result2[i].getX()][result2[i].getY()].setValor(result2[i].getValor());

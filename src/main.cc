@@ -151,7 +151,7 @@ int main(void){
     }
     tablero.setHeuristic(opcion_heuristica);
     //tablero.a_star(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
-    tablero.caminoOptimo(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
+    tablero.caminoOptimo(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB, taxi);
 
     // Print the board
     if (print_file == true) {
