@@ -25,57 +25,59 @@
 
 class Board {
   public:
-    Board() = default;
+    Board(void) = default;
     Board(const int& rows, const int& cols);
-    // Getters
-    int getRows(void) const;
-    int getCols(void) const;
+
+    int get_rows(void) const;
+    int get_cols(void) const;
     // Reads the coordinates given from a file
-    int readCoordFile(std::ifstream& coord_file);
-    Cell& getCell(const int& x, const int& y);
-    // Setters
-    void setRows(const int& rows);
-    void setCols(const int& cols);
-    // Set the neighbors of the cell
-    void setVecinos();
-    // Set the neighbors of a specific cell
-    void setVecino(int i, int j);
-    void setBoard(const int& rows, const int& cols);
-    void setHeuristic(int option);
+    int read_coord_file(std::ifstream& coord_file);
+    Cell& get_cell(const int& x, const int& y);
+    void set_rows(const int& rows);
+    void set_cols(const int& cols);
+    // Set the neighbors of a specific cell for 4 directions
+    void set_neightbors_4_directions(int i, int j);
+    // Set the neighbors of a specific cell for 8 direction
+    void set_neightbors_8_directions(int i, int j);
+    void set_board(const int& rows, const int& cols);
+    void set_heuristic(int option);
     // Changes the state of a specific cell of the board
-    void changeState(const int& x, const int& y, const int& state);
+    void change_state(const int& x, const int& y, const int& state);
     // Creates a random obstacles on the board
-    void createRandomObstacle(int& obstacles);
+    void create_random_obstacle(float& obstacles);
     // Print a specific cell of the board
-    void printCell(const int& x, const int& y);
+    void print_cell(const int& x, const int& y);
     // Print a specific cell of the board in a file
-    void printCell(const int& x, const int& y, std::ofstream& fout);
-    // Prints the board
-    void printBoard(Taxi taxi);
+    void print_cell(const int& x, const int& y, std::ofstream& fout);
+    // Store the cordinstes in s file
+    void print_cell(const int& x, const int& y, std::ofstream& fout, int debug);
+    // Prints the board on screen
+    void print_board(Taxi taxi);
     // Prints the board in a file
-    void printBoard(Taxi taxi, std::ofstream& fout);
+    void print_board(Taxi taxi, std::ofstream& fout);
+    // Store random obstacles in a file
+    void print_board(Taxi taxi, std::ofstream& fout, bool debug);
     // Checks if the obstacle option is on
-    bool createObstacle(const int& x, const int& y);
-
+    bool create_obstacle(const int& x, const int& y);
+    // Checks if the 
     bool is_in_set(const Cell& c, const std::vector<Cell>& s);
-    std::vector<Cell>& a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result);
-    void gestionar_vecino(std::vector<Cell> open, Cell celda_vecina);
-    void reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell I);
-    bool caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal, Taxi& taxi);
-
-
-    long int expanded_nodes = 0;
-
+    // A* algorithm
+    std::vector<Cell>& a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result, int moveset);
+    // Take tha current cell and iterates over its parent
+    void rebuild_path(std::vector<Cell>& v, Cell& actual, Cell I);
+    // Checks for the optimize path
+    bool optimal_path(int xInicio, int yInicio, int xFinal, int yFinal, Taxi& taxi, int moveset);
   private:
     // Rows of the board
     int rows_;
     // Columns of the board
     int cols_;
     // Stores the board
-    std::vector<std::vector<Cell> > board_;
-    
+    std::vector<std::vector<Cell>> board_;
+    // Heuristic function
     Heuristic* heuristic_;
-
+    // Number of nodes that have been expanded
+    long int expanded_nodes = 0;
 };
 
 #endif // _BOARD_H_

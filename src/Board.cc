@@ -3,64 +3,63 @@
 Board::Board(const int& rows, const int& cols) {
   assert(rows >= 0 && cols >= 0 && "Bad board dimensions:(");
   // Assign initial board positions
-  setRows(rows);
-  setCols(cols);
-  setBoard(rows, cols);
+  set_rows(rows);
+  set_cols(cols);
+  set_board(rows, cols);
   // Initialize board dimensions
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
-      board_[i][j].setValor(FREE);
+      board_[i][j].set_state(FREE);
     }
   }
-  //setVecinos();
+  //setNeightbors_4_Directionss();
 }
 
 
 
 // @return rows of the board
-int Board::getRows(void) const {
+int Board::get_rows(void) const {
   return rows_;
 }
 
 
 
 // @return columns of the board
-int Board::getCols(void) const {
+int Board::get_cols(void) const {
   return cols_;
 }
 
 
 
 // @return a specific cell of the board
-Cell& Board::getCell(const int& x, const int& y) {
-    return board_[x][y];
+Cell& Board::get_cell(const int& x, const int& y) {
+  return board_[x][y];
 }
 
 
 
 // @brief sets rows
-void Board::setRows(const int& rows) {
+void Board::set_rows(const int& rows) {
   rows_ = rows;
 }
 
 
 
 // @brief sets columns
-void Board::setCols(const int& cols) {
+void Board::set_cols(const int& cols) {
   cols_ = cols;
 }
 
 
 
 // @brief sets board dimensions
-void Board::setBoard(const int& rows, const int& cols) {
+void Board::set_board(const int& rows, const int& cols) {
   board_.resize(rows);
   for (int i = 0; i < rows; i++) {
     board_[i].resize(cols);
   }
-
-  for (int i = 0; i < board_.size(); i++) {
-    for (int j = 0; j < board_[i].size(); j++) {
+  for (unsigned int i = 0; i < board_.size(); i++) {
+    for (unsigned int j = 0; j < board_[i].size(); j++) {
       Cell aux(i, j);
       board_[i][j] = aux;
     }
@@ -70,19 +69,19 @@ void Board::setBoard(const int& rows, const int& cols) {
 
 
 // @brief changes state of the cell
-void Board::changeState(const int& x, const int& y, const int& state) {
-  board_[x][y].setValor(state);
+void Board::change_state(const int& x, const int& y, const int& state) {
+  board_[x][y].set_state(state);
 }
 
 
 
 // @brief creates an obstacle in a specicif position of the board
-bool Board::createObstacle(const int& x, const int& y) {
+bool Board::create_obstacle(const int& x, const int& y) {
   Cell dummy;
-  if(x >= 0 && y >= 0 && x <= getRows() && y <= getCols()) {
-    dummy = getCell(x, y);
-    if (dummy.getValor() == 0) {
-      changeState(x, y, 2);
+  if(x >= 0 && y >= 0 && x <= get_rows() && y <= get_cols()) {
+    dummy = get_cell(x, y);
+    if (dummy.get_state() == 0) {
+      change_state(x, y, 2);
       return true;
     }
   }
@@ -92,21 +91,19 @@ bool Board::createObstacle(const int& x, const int& y) {
 
 
 // @brief creates an obstacle in a random position of the board
-void Board::createRandomObstacle(int& obstacles) {
+void Board::create_random_obstacle(float& obstacles_percentage) {
   int row, col;
   int obstacle_counter = 0;
-
   srand(time(NULL));
-  int area = getRows() * getCols();
-
+  int obstacles = (get_rows() * get_cols()) * (obstacles_percentage / 100);
+  int area = (get_rows() * get_cols());
   // If number of obstacles are greater than the area of the board, 
   // sets the maximum posible obstacles
   obstacles >= area - 2 ? obstacles = area - 2 : obstacles;
-
   while (obstacle_counter < obstacles) {
-    row = rand() % getRows();
-    col = rand() % getCols();
-    if (createObstacle(row, col))
+    row = rand() % get_rows();
+    col = rand() % get_cols();
+    if (create_obstacle(row, col))
       obstacle_counter++;
   }
 }
@@ -114,28 +111,32 @@ void Board::createRandomObstacle(int& obstacles) {
 
 
 // @brief prints a cell on the board based on its state
-void Board::printCell(const int& x, const int& y) {
+void Board::print_cell(const int& x, const int& y) {
   Colors color;
-  Cell dummy = getCell(x, y);
-  switch (dummy.getValor()) {
+  Cell dummy = get_cell(x, y);
+  switch (dummy.get_state()) {
     case FREE:
-      std::cout << color.writeWhite("·");
+      std::cout << color.write_white("·");
       break;
 
     case STEPPED:
-      std::cout << color.writeCyan("X");
+      std::cout << color.write_cyan("X");
       break;
 
     case OBSTACLE:
-      std::cout << color.writeYellow("█");
+      std::cout << color.write_yellow("█");
       break;
 
     case INITIAL:
-      std::cout << color.writeRed("A");
+      std::cout << color.write_red("A");
       break;
 
     case END:
-      std::cout << color.writeBlue("B");
+      std::cout << color.write_blue("B");
+      break;
+
+    case MATCHED:
+      std::cout << color.write_blue("*");
       break;
     
     default:
@@ -146,9 +147,9 @@ void Board::printCell(const int& x, const int& y) {
 
 
 // @brief prints a cell on the board based on its state
-void Board::printCell(const int& x, const int& y, std::ofstream& fout) {
-  Cell dummy = getCell(x, y);
-  switch (dummy.getValor()) {
+void Board::print_cell(const int& x, const int& y, std::ofstream& fout) {
+  Cell dummy = get_cell(x, y);
+  switch (dummy.get_state()) {
     case FREE:
       fout << "·";
       break;
@@ -168,7 +169,10 @@ void Board::printCell(const int& x, const int& y, std::ofstream& fout) {
     case END:
       fout << "B";
       break;
-    
+    case MATCHED:
+      fout << "*";
+      break;
+
     default:
         break;
   }
@@ -176,9 +180,20 @@ void Board::printCell(const int& x, const int& y, std::ofstream& fout) {
 
 
 
+
+void Board::print_cell(const int& x, const int& y, std::ofstream& fout, int debug) {
+  Cell dummy = get_cell(x, y);
+  if (dummy.get_state() == OBSTACLE){
+    fout << x << " " << y << std::endl;
+  }
+}
+
+
+
+
 // @brief reads a coordinate from a file and assigns it to a cell on the board
 // @return count of obstacles placed in the board
-int Board::readCoordFile(std::ifstream& coord_file) {
+int Board::read_coord_file(std::ifstream& coord_file) {
   int x = 0;
   int y = 0;
   int lines_read = 0;
@@ -192,7 +207,7 @@ int Board::readCoordFile(std::ifstream& coord_file) {
     x = stoi(x_string);
     y = stoi(y_string);
     
-    if (createObstacle(x, y))
+    if (create_obstacle(x, y))
       placed_obstacles_count++;
   }
   std::cout << "Numero de lineas leidas (1 linea = 1 obstaculo): " << lines_read << std::endl; 
@@ -202,14 +217,14 @@ int Board::readCoordFile(std::ifstream& coord_file) {
 
 
 // @brief prints the board on screen
-void Board::printBoard(Taxi taxi) {
-  for (int i = 0; i < getRows(); i++) {
+void Board::print_board(Taxi taxi) {
+  for (int i = 0; i < get_rows(); i++) {
     std::cout << "\n";
-    for (int j = 0; j < getCols(); j++) {
-      if (i == taxi.getX_coord() && j == taxi.getY_coord())
-        taxi.printTaxi();
+    for (int j = 0; j < get_cols(); j++) {
+      if (i == taxi.get_Xcoord() && j == taxi.get_Ycoord())
+        taxi.print_taxi();
       else 
-        printCell(i, j);
+        print_cell(i, j);
     }
   }
   std::cout << std::endl;
@@ -218,14 +233,29 @@ void Board::printBoard(Taxi taxi) {
 
 
 // @brief prints the board on screen
-void Board::printBoard(Taxi taxi, std::ofstream& fout) {
-  for (int i = 0; i < getRows(); i++) {
+void Board::print_board(Taxi taxi, std::ofstream& fout) {
+  for (int i = 0; i < get_rows(); i++) {
     fout << "\n";
-    for (int j = 0; j < getCols(); j++) {
-      if (i == taxi.getX_coord() && j == taxi.getY_coord())
-        taxi.printTaxi(fout);
+    for (int j = 0; j < get_cols(); j++) {
+      if (i == taxi.get_Xcoord() && j == taxi.get_Ycoord())
+        taxi.print_taxi(fout);
       else 
-        printCell(i, j, fout);
+        print_cell(i, j, fout);
+    }
+  }
+  fout << std::endl;
+}
+
+
+void Board::print_board(Taxi taxi, std::ofstream& fout, bool debug) {
+  for (int i = 0; i < get_rows(); i++) {
+    for (int j = 0; j < get_cols(); j++) {
+      if (i == taxi.get_Xcoord() && j == taxi.get_Ycoord()){
+        continue;
+      }
+      else{ 
+        print_cell(i, j, fout, debug);
+      }
     }
   }
   fout << std::endl;
@@ -234,7 +264,7 @@ void Board::printBoard(Taxi taxi, std::ofstream& fout) {
 
 bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
   for(unsigned int i = 0; i < s.size(); i++) {
-    if(s[i].getX() == c.getX() && s[i].getY() == c.getY())
+    if(s[i].get_xCoord() == c.get_xCoord() && s[i].get_yCoord()== c.get_yCoord())
       return true;
   }
   return false;
@@ -242,120 +272,143 @@ bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
 
 
 // No funciona bien aun, falta buscar camino minimo
-std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result) {                                            
-  std::vector<Cell> setAbierto;
-  std::vector<Cell> setCerrado;
-  Cell& Inicial = board_[xInicio][yInicio];
+std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result, int moveset) {                                            
+  std::vector<Cell> open_set;
+  std::vector<Cell> closed_set;
+  Cell& initial = board_[xInicio][yInicio];
   Cell& Final = board_[xFinal][yFinal];
   Cell* fail_result = &Final;
-  Inicial.setg_(0);         
+  initial.setg_(0);         
   //Añadir metodo de eleccion de heuristica                                         
-  Inicial.setf_((*heuristic_)(Inicial, Final));
+  initial.setf_((*heuristic_)(initial, Final));
 
-  setAbierto.push_back(Inicial);                                     
-  while(!setAbierto.empty()){
+  open_set.push_back(initial);                                     
+  while(!open_set.empty()){
     unsigned int winner = 0;
-    for(unsigned int i = 0; i < setAbierto.size(); i++) {     
+    for(unsigned int i = 0; i < open_set.size(); i++) {     
       // nos quedamos con el camino de menor coste      
-      if(setAbierto[i].getf_() < setAbierto[winner].getf_())
+      if(open_set[i].getf_() < open_set[winner].getf_())
         winner = i;
     }
-    Cell& actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()]; 
+    Cell& actual = board_[open_set[winner].get_xCoord()][open_set[winner].get_yCoord()]; 
     fail_result = &actual;
     // Si es la misma celda -> Hemos llegado al final con camino óptimo
-    if((actual.getX() == xFinal) && (yFinal == actual.getY())) { 
-      reconstruir_camino(result, actual, Inicial);
+    if((actual.get_xCoord() == xFinal) && (yFinal == actual.get_yCoord())) { 
+      rebuild_path(result, actual, initial);
       return result;
     }
-    setAbierto.erase(setAbierto.begin() + winner);
-    setVecino(actual.getX(),actual.getY());
-    expanded_nodes++;                
-    setCerrado.push_back(actual);
+    open_set.erase(open_set.begin() + winner);
+    if (moveset == 4){
+      set_neightbors_4_directions(actual.get_xCoord(),actual.get_yCoord());
+    }
+    else set_neightbors_8_directions(actual.get_xCoord(),actual.get_yCoord());
 
-    for(unsigned int i = 0; i < actual.sizeVecinos(); i++) {                 
-      int x = actual.getVecino(i).first;
-      int y = actual.getVecino(i).second;
-      Cell& vecino = board_[x][y];            
-      if(is_in_set(vecino, setCerrado))
+    expanded_nodes++;                
+    closed_set.push_back(actual);
+
+    for(unsigned int i = 0; i < actual.neighbors_size(); i++) {                 
+      int x = actual.get_neighbors(i).first;
+      int y = actual.get_neighbors(i).second;
+      Cell& neighbor = board_[x][y];            
+      if(is_in_set(neighbor, closed_set))
           continue;
 
       int tent_g = actual.getg_() + 1;
 
-      if(!is_in_set(vecino, setAbierto)) {
+      if(!is_in_set(neighbor, open_set)) {
       // Este camino es el mejor! Guárdalo
-        board_[vecino.getX()][vecino.getY()].setPadre(actual);
-        board_[vecino.getX()][vecino.getY()].setg_(tent_g);
-        board_[vecino.getX()][vecino.getY()].setf_(tent_g + (*heuristic_)(vecino, Final));
-        setAbierto.push_back(vecino);
+        board_[neighbor.get_xCoord()][neighbor.get_yCoord()].set_father(actual);
+        board_[neighbor.get_xCoord()][neighbor.get_yCoord()].setg_(tent_g);
+        board_[neighbor.get_xCoord()][neighbor.get_yCoord()].setf_(tent_g + (*heuristic_)(neighbor, Final));
+        open_set.push_back(neighbor);
         //contador++;
       }
-      else if(tent_g >= vecino.getg_())
+      else if(tent_g >= neighbor.getg_())
         continue;
 
     }
   }
-  reconstruir_camino(result, *fail_result, Inicial);
+  rebuild_path(result, *fail_result, initial);
   return result;
 }
 
 
 
-void Board::reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell i) {
+void Board::rebuild_path(std::vector<Cell>& v, Cell& actual, Cell i) {
   Cell& aux = actual;
   v.push_back(aux);
-  while ((aux.getX() != i.getX()) || (aux.getY() != aux.getY())) {
-    aux = board_[static_cast<int>(aux.getPadre().first)][static_cast<int>(aux.getPadre().second)];
+  while ((aux.get_xCoord() != i.get_xCoord()) || (aux.get_yCoord() != aux.get_yCoord())) {
+    aux = board_[static_cast<int>(aux.get_father().first)][static_cast<int>(aux.get_father().second)];
     v.push_back(aux);
   }
 }
 
-bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal, Taxi& taxi) {
-  if(board_[xInicio][yInicio].getValor() == 3){
-      board_[xInicio][yInicio].setValor(3);
-      //setVecino(static_cast<unsigned int>(xInicio), static_cast<unsigned int>(yInicio));
+bool Board::optimal_path(int xInicio, int yInicio, int xFinal, int yFinal, Taxi& taxi, int moveset) {
+  if(board_[xInicio][yInicio].get_state() == 3){
+      board_[xInicio][yInicio].set_state(3);
+      //setNeightbors_4_Directions(static_cast<unsigned int>(xInicio), static_cast<unsigned int>(yInicio));
   }
-  if(board_[xFinal][yFinal].getValor() == 4){
-      board_[xFinal][yFinal].setValor(4);
+  if(board_[xFinal][yFinal].get_state() == 4){
+    board_[xFinal][yFinal].set_state(4);
+    if (moveset == 4){
       if(static_cast<int>(xFinal) - 1 >= 0){
-          setVecino(xFinal - 1, yFinal);
+        set_neightbors_4_directions(xFinal - 1, yFinal);
       }
-      if(xFinal + 1 < board_.size()){
-          setVecino(xFinal + 1, yFinal);
+      if(xFinal + 1 < static_cast<int>(board_.size())){
+        set_neightbors_4_directions(xFinal + 1, yFinal);
       }
       if(static_cast<int>(yFinal) - 1 >= 0){
-          setVecino(xFinal, yFinal - 1);
+        set_neightbors_4_directions(xFinal, yFinal - 1);
       }
-      if(yFinal + 1 < board_[0].size()){
-          setVecino(xFinal, yFinal + 1);
+      if(yFinal + 1 < static_cast<int>(board_[0].size())){
+        set_neightbors_4_directions(xFinal, yFinal + 1);
+      } 
+    }
+    if (moveset == 8){
+      if(static_cast<int>(xFinal) - 1 >= 0){
+        set_neightbors_8_directions(xFinal - 1, yFinal);
       }
+      if(xFinal + 1 < static_cast<int>(board_.size())){
+        set_neightbors_8_directions(xFinal + 1, yFinal);
+      }
+      if(static_cast<int>(yFinal) - 1 >= 0){
+        set_neightbors_8_directions(xFinal, yFinal - 1);
+      }
+      if(yFinal + 1 < static_cast<int>(board_[0].size())){
+        set_neightbors_8_directions(xFinal, yFinal + 1);
+      }
+    }
   }
   long time_init = clock();
+  bool exists;
   std::vector<Cell> result;
-  std::vector<Cell>& result2 = a_star(xInicio, yInicio, xFinal, yFinal, result);
+  std::vector<Cell>& result2 = a_star(xInicio, yInicio, xFinal, yFinal, result, moveset);
   long time_final = clock();
   double time = double((time_final - time_init));
   float seconds = time/CLOCKS_PER_SEC;
   std::cout << "Tiempo de ejecución (ciclos 1M/s): " << time << std::endl << "Tiempo de ejecución (segundos): " << seconds << std::endl;
   std::cout << "Nodos expandidos: " << expanded_nodes << std::endl;
-  int i = 0;
+  unsigned int i = 0;
   if (result2.size()>0){
-    Taxi taxi2(result2[0].getX(),result2[0].getY());
+    Taxi taxi2(result2[0].get_xCoord(), result2[0].get_yCoord());
     taxi = taxi2;
   }
   else {
-    return false;
+    exists = false;
+    return exists;
   }
   for (i = 0; i < result2.size(); i++) {
-    result2[i].setValor(1);
-    board_[result2[i].getX()][result2[i].getY()].setValor(result2[i].getValor());
+    result2[i].set_state(1);
+    board_[result2[i].get_xCoord()][result2[i].get_yCoord()].set_state(result2[i].get_state());
+    if (result2[i].get_xCoord() == xFinal && result2[i].get_yCoord() == yFinal) exists = true;
   }
-  board_[xFinal][yFinal].setValor(4);
-  return true;
+  board_[xFinal][yFinal].set_state(5);
+  return exists;
 }
 
 
-void Board::setHeuristic(int option) {
-  if (option == 0){
+void Board::set_heuristic(int option) {
+  if (option == 1){
       heuristic_ = new d_manhattan();
   }
   else{
@@ -365,35 +418,88 @@ void Board::setHeuristic(int option) {
 
 
 
-void Board::setVecinos() {
-  for (int i = 0; i < board_.size(); i++) {
-    for (int j = 0; j < board_[i].size(); j++) {
-      setVecino(i, j);
+
+void Board::set_neightbors_4_directions(int i, int j) {
+  if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].get_state() != 2) {
+    //UP
+    if(i - 1 >= 0){
+      if(board_[static_cast<unsigned int>(i - 1)][static_cast<unsigned int>(j)].get_state() != 2) {
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i-1)][static_cast<unsigned int>(j)]);
+      }
+    }
+    //DOWN
+    if(static_cast<unsigned int>(i + 1) < board_.size()){
+      if(board_[static_cast<unsigned int>(i + 1)][static_cast<unsigned int>(j)].get_state() != 2) {
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i + 1)][static_cast<unsigned int>(j)]);
+      }
+    }
+    //LEFT
+    if(j - 1 >= 0){
+      if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j - 1)].get_state() != 2) {
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j - 1)]);
+      }
+    }
+    //RIGHT
+    if(static_cast<unsigned int>(j + 1) < board_[static_cast<unsigned int>(i)].size()){
+      if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j + 1)].get_state() != 2) {
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j + 1)]);
+      }
     }
   }
 }
 
-void Board::setVecino(int i, int j) {
-  if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].getValor() != 2){
-      if(i-1 >= 0){
-          if(board_[static_cast<unsigned int>(i-1)][static_cast<unsigned int>(j)].getValor() != 2){
-              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i-1)][static_cast<unsigned int>(j)]);
-          }
+
+
+
+void Board::set_neightbors_8_directions(int i, int j){
+  if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].get_state() != 2){
+    //UP
+    if(i - 1 >= 0){
+      if(board_[static_cast<unsigned int>(i - 1)][static_cast<unsigned int>(j)].get_state() != 2){
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i - 1)][static_cast<unsigned int>(j)]);
       }
-      if(static_cast<unsigned int>(i+1) < board_.size()){
-          if(board_[static_cast<unsigned int>(i+1)][static_cast<unsigned int>(j)].getValor() != 2){
-              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i+1)][static_cast<unsigned int>(j)]);
-          }
+    }
+    //DOWN
+    if(static_cast<unsigned int>(i + 1) < board_.size()){
+      if(board_[static_cast<unsigned int>(i + 1)][static_cast<unsigned int>(j)].get_state() != 2){
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i + 1)][static_cast<unsigned int>(j)]);
       }
-      if(j-1 >= 0){
-          if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j-1)].getValor() != 2){
-              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j-1)]);
-          }
+    }
+    //LEFT
+    if(j - 1 >= 0){
+      if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j - 1)].get_state() != 2){
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j - 1)]);
       }
-      if(static_cast<unsigned int>(j+1) < board_[static_cast<unsigned int>(i)].size()){
-          if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j+1)].getValor() != 2){
-              board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].addVecino(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j+1)]);
-          }
+    }
+    //RIGHT
+    if(static_cast<unsigned int>(j + 1) < board_[static_cast<unsigned int>(i)].size()){
+      if(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j + 1)].get_state() != 2){
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j + 1)]);
       }
+    }
+    //UP-LEFT
+    if(i - 1 >= 0 && j-1 >= 0){
+      if(board_[static_cast<unsigned int>(i-1)][static_cast<unsigned int>(j-1)].get_state() != 2){
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i - 1)][static_cast<unsigned int>(j - 1)]);
+      }
+    }
+    //DOWN-LEFT
+    if((static_cast<unsigned int>(i + 1) < board_[static_cast<unsigned int>(i)].size()) && (j - 1 >= 0)){
+      if(board_[static_cast<unsigned int>(i + 1)][static_cast<unsigned int>(j - 1)].get_state() != 2){
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i + 1)][static_cast<unsigned int>(j - 1)]);
+      }
+    }
+    //DOWN-RIGHT
+    if((static_cast<unsigned int>(i + 1) < board_[static_cast<unsigned int>(i)].size()) && (static_cast<unsigned int>(j + 1) < board_[static_cast<unsigned int>(i + 1)].size())){
+      if(board_[static_cast<unsigned int>(i + 1)][static_cast<unsigned int>(j + 1)].get_state() != 2){
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i + 1)][static_cast<unsigned int>(j + 1)]);
+      }
+    }
+    //UP-RIGHT
+    if(i - 1 >= 0 && (static_cast<unsigned int>(j + 1) < board_[static_cast<unsigned int>(i - 1)].size())){
+      if(board_[static_cast<unsigned int>(i - 1)][static_cast<unsigned int>(j + 1)].get_state() != 2){
+        board_[static_cast<unsigned int>(i)][static_cast<unsigned int>(j)].add_neighbor(board_[static_cast<unsigned int>(i - 1)][static_cast<unsigned int>(j + 1)]);
+      }
+    }
   }
 }

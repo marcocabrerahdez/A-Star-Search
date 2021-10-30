@@ -27,18 +27,18 @@ class Taxi {
   public:
     Taxi(const int& x, const int& y);
     
-    int getX_coord() const;
-    int getY_coord() const;
+    int get_Xcoord() const;
+    int get_Ycoord() const;
     // Prints the taxi in the board
-    void printTaxi();
-    void printTaxi(std::ofstream& fout);
+    void print_taxi();
+    // Prints the taxi in the the file
+    void print_taxi(std::ofstream& fout);
   private:
+    // Coordenates of taxi on board
     int xCoord;
     int yCoord;
     // Specifies current direction of the taxi
     int direction_;
-    // Represent execution time 
-    clock_t time_;
 };
 
 #endif // _TAXI_H

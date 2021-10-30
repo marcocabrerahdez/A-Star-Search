@@ -1,39 +1,41 @@
 #include "../include/Cell.h"
 
-Cell::Cell():valor_(FREE), g_(INT_MAX), f_(INT_MAX), x_(0), y_(0) {
-    padre_ = std::make_pair(0, 0);
+Cell::Cell():xCoord_(0), yCoord_(0), state_(FREE), g_(INT_MAX), f_(INT_MAX) {
+  father_ = std::make_pair(0, 0);
 }
 
 
-Cell::Cell(int x, int y, int valor, int g, int f): valor_(valor), g_(g), f_(f), x_(x), y_(y) {
-  if(valor_ < 0 || valor_ > 3){
-      valor_ = 0;               
+
+Cell::Cell(int xCoord, int yCoord, int state, int g, int f) : 
+          xCoord_(xCoord), yCoord_(yCoord), state_(state), g_(g), f_(f) {
+  if(state_ < 0 || state_ > 3){
+    state_ = 0;               
   }
-  padre_ = std::make_pair(0, 0);
+  father_ = std::make_pair(0, 0);
 }
 
 
 
-int Cell::getValor() { 
-  return valor_; 
+int Cell::get_state(void) { 
+  return state_; 
 }
 
 
 
-void Cell::setValor(int valor) { 
-  valor_ = valor; 
+void Cell::set_state(int state) { 
+  state_ = state; 
 }
 
 
 
-int Cell::getX()const { 
-  return x_; 
+int Cell::get_xCoord() const { 
+  return xCoord_; 
 }
 
 
 
-int Cell::getY() const { 
-  return y_; 
+int Cell::get_yCoord() const { 
+  return yCoord_; 
 }
 
 
@@ -48,6 +50,8 @@ void Cell::setf_(int f) {
   f_ = f; 
 }
 
+
+
 int Cell::getg_() { 
   return g_; 
 }
@@ -60,42 +64,35 @@ void Cell::setg_(int g) {
 
 
 
-std::pair<int,int> Cell::getPadre(){
-  return padre_;
+std::pair<int,int> Cell::get_father() const {
+  return father_;
 }
 
 
 
-std::pair<int,int> Cell::getPadre() const{
-  return padre_;
+std::pair<int,int> Cell::get_father() {
+  return father_;
+}
+
+
+void Cell::set_father(const Cell& c){
+  father_ = std::make_pair(c.get_xCoord(), c.get_yCoord());
 }
 
 
 
-void Cell::setPadre(const Cell& c){
-  padre_ = std::make_pair(c.getX(), c.getY());
+unsigned int Cell::neighbors_size(){ 
+  return neighbors_.size(); 
 }
 
 
 
-unsigned int Cell::sizeVecinos(){ 
-  return vecinos_.size(); 
+std::pair<int, int> Cell::get_neighbors(int i){
+  return neighbors_[static_cast<int>(i)];
 }
 
 
 
-std::pair<int, int> Cell::getVecino(int i){
-  return vecinos_[static_cast<int>(i)];
-}
-
-
-
-void Cell::resetVecinos(){
-  vecinos_.clear();
-}
-
-
-
-void Cell::addVecino(const Cell& c){
-  vecinos_.push_back(std::make_pair(c.getX(), c.getY()));
+void Cell::add_neighbor(const Cell& c){
+  neighbors_.push_back(std::make_pair(c.get_xCoord(), c.get_yCoord()));
 }

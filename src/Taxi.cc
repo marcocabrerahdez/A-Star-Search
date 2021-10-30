@@ -21,39 +21,44 @@ Taxi::Taxi(const int& x, const int& y) {
 
 
 
-int Taxi::getX_coord() const {
+int Taxi::get_Xcoord() const {
     return xCoord;
 }
 
 
 
-int Taxi::getY_coord() const {
+int Taxi::get_Ycoord() const {
     return yCoord;
 }
 
 
-void Taxi::printTaxi(void) {
+
+/**
+ * @brief Prints the taxi in the board on screen.
+ */
+void Taxi::print_taxi(void) {
   Colors color;
   switch (direction_) {
     case NORTH:
-      std::cout << color.writeGreen("^");
+      std::cout << color.write_green("^");
       break;
     case EAST:
-      std::cout << color.writeGreen(">");;
+      std::cout << color.write_green(">");;
       break;
       case SOUTH:
-      std::cout << color.writeGreen("v");;
+      std::cout << color.write_green("v");;
       break;
     case WEST:
-      std::cout << color.writeGreen("<");;
+      std::cout << color.write_green("<");;
       break;  
   }
 }
 
 
-
-
-void Taxi::printTaxi(std::ofstream& fout) {
+/**
+ * @brief Prints the taxi in the board in a file.
+ */
+void Taxi::print_taxi(std::ofstream& fout) {
   switch (direction_) {
     case NORTH:
       fout << "^";

@@ -22,14 +22,14 @@ class Colors {
     Colors(void) = default;
 
     // Text color functions
-    std::string writeGrey(const std::string& myString);
-    std::string writeRed(const std::string& myString);
-    std::string writeGreen(const std::string& myString);
-    std::string writeYellow(const std::string& myString);
-    std::string writeBlue(const std::string& myString);
-    std::string writeMagenta(const std::string& myString);
-    std::string writeCyan(const std::string& myString);
-    std::string writeWhite(const std::string& myString);
+    std::string write_grey(const std::string& myString);
+    std::string write_red(const std::string& myString);
+    std::string write_green(const std::string& myString);
+    std::string write_yellow(const std::string& myString);
+    std::string write_blue(const std::string& myString);
+    std::string write_magenta(const std::string& myString);
+    std::string write_cyan(const std::string& myString);
+    std::string write_white(const std::string& myString);
 };
 
 #endif // COLORS_H_

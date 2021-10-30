@@ -13,7 +13,8 @@
  */
 #include "../include/Board.h"
 
-/*#include "Board.cc"
+/*
+#include "Board.cc"
 #include "Taxi.cc"
 #include "Heuristic.cc"
 #include "Cell.cc"
@@ -41,6 +42,7 @@ int main(void){
     
     std::ifstream fichero;
     std::ofstream fichero_out;
+    std::ofstream coord_out;
     std::string file_name;
 
     struct winsize w;
@@ -96,8 +98,8 @@ int main(void){
       else out_of_bounds = false;
     }
     Taxi taxi(X_puntoA, Y_puntoA);
-    tablero.changeState(X_puntoA,Y_puntoA,3);
-    tablero.changeState(X_puntoB,Y_puntoB,4);
+    tablero.change_state(X_puntoA,Y_puntoA,3);
+    tablero.change_state(X_puntoB,Y_puntoB,4);
 
     int opcion_heuristica = 0;
     out_of_bounds = false;
@@ -118,48 +120,63 @@ int main(void){
 
         fichero.open(file_name);
 
-        read_lines = tablero.readCoordFile(fichero);
+        read_lines = tablero.read_coord_file(fichero);
         std::cout << "Número de obstaculos añadidos por fichero : " << read_lines << std::endl;
         break;
 
       case 1:
-        int num_obstaculos = 0;
+        float obstacles_percentage = 0;
         bool bool_aleatorio = false;
         int x_coord, y_coord = 0; // i, j
         int total_cells = M * N;
-
-        std::cout << "¿Cuantos obstaculos quiere colocar (de 0 a " << total_cells << " )?" << std::endl;
-        std::cin >> num_obstaculos;
-
-        std::cout << "¿Quiere introducirlos aleatoriamente o de forma manual (0 aleatorio, 1 manual)?" << std::endl;
+        int obstacles_number = 0;
+        std::cout << "¿Quiere que se generen aleatoriamente o introducirlos de forma manual (0 aleatorio, 1 manual)?" << std::endl;
         std::cin >> bool_aleatorio;
-        
+
         if (!bool_aleatorio){
-            tablero.createRandomObstacle(num_obstaculos);
+          std::cout << "¿Cual es el porcenaje de obstaculos que quieres colocar (de 0 a 100)?" << std::endl;
+          std::cin >> obstacles_percentage;
+          tablero.create_random_obstacle(obstacles_percentage);
         } else {
-            for (int i = 1; i <= num_obstaculos; i++) {
-              std::cout << "Introduzca la coordenada x del obstáculo " << i << ": ";
-              std::cin >> x_coord;
+          std::cout << "¿Cual es el numero de obstaculos que quieres colocar (de 0 a "<< total_cells << " )?" << std::endl;
+          std::cin >> obstacles_number;
+          for (int i = 1; i <= obstacles_number; i++) {
+            std::cout << "Introduzca la coordenada x del obstáculo " << i << ": ";
+            std::cin >> x_coord;
 
-              std::cout << "\nIntroduzca la coordenada y del obstáculo " << i << ": ";
-              std::cin >> y_coord;
+            std::cout << "\nIntroduzca la coordenada y del obstáculo " << i << ": ";
+            std::cin >> y_coord;
 
-              tablero.createObstacle(x_coord, y_coord);
-            }
+            tablero.create_obstacle(x_coord, y_coord);
+          }
         }
         break;
     }
-    tablero.setHeuristic(opcion_heuristica);
+    int moveset = 5;
+    while (moveset != 4 && moveset != 8){
+      std::cout << "¿Que set de movimientos quieres usar,  4 movimientos, 8 movimientos (4,8)?" << std::endl;
+      std::cin >> moveset;
+    }
+    tablero.set_heuristic(opcion_heuristica);
     //tablero.a_star(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
     bool result;
-    result = tablero.caminoOptimo(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB, taxi);
+    result = tablero.optimal_path(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB, taxi, moveset);
+
+    bool coord_file = false;
+    std::cout << "¿Quieres sacar un fichero de las coordenadas de los obstaculos generados (0 no, 1 si)?" << std::endl;
+    std::cin >> coord_file;
+    if (coord_file){
+      coord_out.open("obs_coord");
+      tablero.print_board(taxi, coord_out, 1);
+    }
+
 
     // Print the board
     if (print_file == true) {
       fichero_out.open("output.txt");
-      tablero.printBoard(taxi, fichero_out);
+      tablero.print_board(taxi, fichero_out);
     } else {
-      tablero.printBoard(taxi);
+      tablero.print_board(taxi);
     }
     if (!result) std::cout << std::endl <<"No se ha encontrado camino hasta el punto final" << std::endl;
-}
+} 
