@@ -231,14 +231,6 @@ void Board::printBoard(Taxi taxi, std::ofstream& fout) {
   fout << std::endl;
 }
 
-void Board::setInitial(const int& rows, const int& cols){}
-
-
-void Board::setGoal(const int& rows, const int& cols) {
-  
-}
-
-
 
 bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
   for(unsigned int i = 0; i < s.size(); i++) {
@@ -255,8 +247,7 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
   std::vector<Cell> setCerrado;
   Cell& Inicial = board_[xInicio][yInicio];
   Cell& Final = board_[xFinal][yFinal];
-
-
+  Cell* fail_result = &Final;
   Inicial.setg_(0);         
   //Añadir metodo de eleccion de heuristica                                         
   Inicial.setf_((*heuristic_)(Inicial, Final));
@@ -270,6 +261,7 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
         winner = i;
     }
     Cell& actual = board_[setAbierto[winner].getX()][setAbierto[winner].getY()]; 
+    fail_result = &actual;
     // Si es la misma celda -> Hemos llegado al final con camino óptimo
     if((actual.getX() == xFinal) && (yFinal == actual.getY())) { 
       reconstruir_camino(result, actual, Inicial);
@@ -302,6 +294,7 @@ std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFina
 
     }
   }
+  reconstruir_camino(result, *fail_result, Inicial);
   return result;
 }
 
@@ -345,14 +338,19 @@ bool Board::caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned in
   std::cout << "Tiempo de ejecución (ciclos 1M/s): " << time << std::endl << "Tiempo de ejecución (segundos): " << seconds << std::endl;
   std::cout << "Nodos expandidos: " << expanded_nodes << std::endl;
   int i = 0;
-  Taxi taxi2(result2[0].getX(),result2[0].getY());
-  taxi = taxi2;
+  if (result2.size()>0){
+    Taxi taxi2(result2[0].getX(),result2[0].getY());
+    taxi = taxi2;
+  }
+  else {
+    return false;
+  }
   for (i = 0; i < result2.size(); i++) {
     result2[i].setValor(1);
     board_[result2[i].getX()][result2[i].getY()].setValor(result2[i].getValor());
   }
   board_[xFinal][yFinal].setValor(4);
-
+  return true;
 }
 
 

@@ -151,7 +151,8 @@ int main(void){
     }
     tablero.setHeuristic(opcion_heuristica);
     //tablero.a_star(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
-    tablero.caminoOptimo(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB, taxi);
+    bool result;
+    result = tablero.caminoOptimo(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB, taxi);
 
     // Print the board
     if (print_file == true) {
@@ -160,4 +161,5 @@ int main(void){
     } else {
       tablero.printBoard(taxi);
     }
+    if (!result) std::cout << std::endl <<"No se ha encontrado camino hasta el punto final" << std::endl;
 }
