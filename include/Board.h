@@ -24,6 +24,7 @@
 #include <cmath>
 #include <cassert>
 #include <vector>
+#include <stdlib.h>
 
 class Board {
   public:
@@ -63,16 +64,17 @@ class Board {
     // Checks if the obstacle option is on
     bool createObstacle(const int& x, const int& y);
 
-    bool is_in_set(const Cell& c, const std::vector<Cell>& s);
+    bool is_in_set(const Cell& c, const std::vector<Cell*>& s);
     std::vector<Cell>& a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result);
     void gestionar_vecino(std::vector<Cell> open, Cell celda_vecina);
-    void reconstruir_camino(std::vector<Cell>& v, Cell& actual, Cell I);
+    void reconstruir_camino(std::vector<Cell>& v, Cell* actual, Cell* I);
     bool caminoOptimo(unsigned int xInicio, unsigned int yInicio, unsigned int xFinal, unsigned int yFinal);
-    void setVecinos(Cell&);
+    void setVecinos(Cell*);
     //void setVecino(int i, int j);
 
     void updateTaxi(Cell c);
     void setTaxi(Taxi* taxi);
+    Taxi* getTaxi();
 
     long int expanded_nodes = 0;
 

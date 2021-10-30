@@ -19,7 +19,6 @@
 #include "Cell.cc"
 #include "Colors.cc"
 
-
 #include <stdio.h>
 #include <iostream>
 #include <fstream>

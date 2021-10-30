@@ -23,7 +23,7 @@ class Heuristic {
     Heuristic() = default;
     virtual ~Heuristic();
 
-    virtual int operator()(const Cell&, const Cell&) = 0;
+    virtual int operator()(const Cell*, const Cell*) = 0;
 };
 
 //-----------------------DISTANCIA EUCLIDEA-------------------------
@@ -31,7 +31,7 @@ class Heuristic {
 class d_euclidea : public Heuristic {
 public:
     d_euclidea() = default;
-    int operator()(const Cell&, const Cell&);
+    int operator()(const Cell*, const Cell*);
 };
 
 //-----------------------DISTANCIA RECTILINEA-----------------------
@@ -39,7 +39,7 @@ public:
 class d_manhattan : public Heuristic {
 public:
     d_manhattan() = default;
-    int operator()(const Cell&, const Cell&);
+    int operator()(const Cell*, const Cell*);
 };
 
 #endif // F_HEURISTICAS_H
