@@ -13,14 +13,6 @@
  */
 #include "../include/Board.h"
 
-/*
-#include "Board.cc"
-#include "Taxi.cc"
-#include "Heuristic.cc"
-#include "Cell.cc"
-#include "Colors.cc"
-*/
-
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -103,14 +95,8 @@ int main(void){
 
     int opcion_heuristica = 0;
     out_of_bounds = false;
-    //while (opcion_heuristica >= 0 || opcion_heuristica <= 1){
-      //if (out_of_bounds == true){
-        //std::cout << "Opcion no correcta, vuelva a introducirlo" << std::endl;
-      //}
-      std::cout << "¿Que heuristica quieres utilizar (0 ecludiana, 1 manhattan)" << std::endl;
-      std::cin >> opcion_heuristica;
-      //out_of_bounds = true;
-    //}
+    std::cout << "¿Que heuristica quieres utilizar (0 ecludiana, 1 manhattan)" << std::endl;
+    std::cin >> opcion_heuristica;
     std::cout << "¿Quiere introducir los obstáculos por pantalla o cargar un fichero de coordenadas (X,Y)? (0 por fichero, 1 por pantalla)" << std::endl;
     std::cin >> opcion;
     switch (opcion) {
@@ -158,7 +144,6 @@ int main(void){
       std::cin >> moveset;
     }
     tablero.set_heuristic(opcion_heuristica);
-    //tablero.a_star(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB);
     bool result;
     result = tablero.optimal_path(X_puntoA, Y_puntoA, X_puntoB, Y_puntoB, taxi, moveset);
 

@@ -12,7 +12,6 @@ Board::Board(const int& rows, const int& cols) {
       board_[i][j].set_state(FREE);
     }
   }
-  //setNeightbors_4_Directionss();
 }
 
 
@@ -271,15 +270,14 @@ bool Board::is_in_set(const Cell& c, const std::vector<Cell>& s){
 }
 
 
-// No funciona bien aun, falta buscar camino minimo
+
 std::vector<Cell>& Board::a_star(int xInicio, int yInicio, int xFinal, int yFinal, std::vector<Cell>& result, int moveset) {                                            
   std::vector<Cell> open_set;
   std::vector<Cell> closed_set;
   Cell& initial = board_[xInicio][yInicio];
   Cell& Final = board_[xFinal][yFinal];
   Cell* fail_result = &Final;
-  initial.setg_(0);         
-  //Añadir metodo de eleccion de heuristica                                         
+  initial.setg_(0);                                               
   initial.setf_((*heuristic_)(initial, Final));
 
   open_set.push_back(initial);                                     
@@ -346,7 +344,6 @@ void Board::rebuild_path(std::vector<Cell>& v, Cell& actual, Cell i) {
 bool Board::optimal_path(int xInicio, int yInicio, int xFinal, int yFinal, Taxi& taxi, int moveset) {
   if(board_[xInicio][yInicio].get_state() == 3){
       board_[xInicio][yInicio].set_state(3);
-      //setNeightbors_4_Directions(static_cast<unsigned int>(xInicio), static_cast<unsigned int>(yInicio));
   }
   if(board_[xFinal][yFinal].get_state() == 4){
     board_[xFinal][yFinal].set_state(4);
