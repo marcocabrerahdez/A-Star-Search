@@ -29,7 +29,7 @@ class Heuristic {
 
 class d_euclidea : public Heuristic {
 public:
-    d_euclidea(){} = default;
+    d_euclidea() = default;
     int operator()(const Cell&, const Cell&);
 };
 
