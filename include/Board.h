@@ -73,7 +73,7 @@ class Board {
     // Columns of the board
     int cols_;
     // Stores the board
-    std::vector<std::vector<Cell>> board_;
+    std::vector<std::vector<Cell> > board_;
     // Heuristic function
     Heuristic* heuristic_;
     // Number of nodes that have been expanded

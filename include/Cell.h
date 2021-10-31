@@ -53,7 +53,7 @@ class Cell {
     // Estimated total cost of the cheapest solution going through node n                 
     int f_;                             
     // Neighbors of the cell
-    std::vector<std::pair<int, int>> neighbors_;
+    std::vector<std::pair<int, int> > neighbors_;
     // Father of the cell
     std::pair<int, int> father_;
 };
