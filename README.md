@@ -1,4 +1,4 @@
-# Artificial Intelligence - Search Practice
+# Artificial Intelligence - A* Search
 Implementation of search strategies as a resolution proposal for the determination of optimal trajectories for autonomous taxis.
 
 ## Instructions
