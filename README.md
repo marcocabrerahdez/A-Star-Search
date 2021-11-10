@@ -1,9 +1,9 @@
-# Inteligencia Artificial - Práctica de Búsqueda
-Implementación de estrategias de búsqueda como propuesta de resolución para la determinación de trayectorias óptimas para taxis autónomos.
+# Artificial Intelligence - Search Practice
+Implementation of search strategies as a resolution proposal for the determination of optimal trajectories for autonomous taxis.
 
-## Instrucciones
-Para ejecutar el programa basta con llamar al ejecutable
+## Instructions
+To run the program just call the executable
 `./main`
 
-### Compilación
+### Compilation
 `make`
