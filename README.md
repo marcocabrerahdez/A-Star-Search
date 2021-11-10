@@ -4,6 +4,6 @@ Implementation of search strategies as a resolution proposal for the determinati
 ## Compilation
 `make`
 
-### Instructions
+## Instructions
 To run the program just call the executable
 `./main`
